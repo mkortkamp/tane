@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Refactor Plug-in
+Bundle-SymbolicName: com.stateofflow.eclipse.tane;singleton:=true
+Bundle-Version: 0.5.0.qualifier
+Bundle-Activator: com.stateofflow.eclipse.tane.Activator
+Bundle-Vendor: State Of Flow
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.resources;bundle-version="3.4.0",
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.core;bundle-version="3.4.0",
+ org.eclipse.jdt.ui;bundle-version="3.4.0",
+ org.eclipse.jface.text;bundle-version="3.4.0",
+ org.eclipse.ltk.core.refactoring;bundle-version="3.4.0",
+ org.eclipse.ltk.ui.refactoring;bundle-version="3.4.0",
+ org.eclipse.help;bundle-version="3.3.101"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
