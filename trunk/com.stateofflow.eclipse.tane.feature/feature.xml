@@ -2,7 +2,7 @@
 <feature
       id="com.stateofflow.eclipse.tane.feature"
       label="Tane Feature"
-      version="1.0.0.qualifier"
+      version="1.0.1.qualifier"
       provider-name="State Of Flow">
 
    <description url="http://code.google.com/p/tane/">
@@ -32,7 +32,7 @@ feature.
          id="com.stateofflow.eclipse.tane"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="1.0.1"
          unpack="false"/>
 
 </feature>
