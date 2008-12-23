@@ -1,0 +1,3 @@
+#Refactorings that would be most useful to implement next
+
+  * [http://www.refactoring.com/catalog/replaceInheritanceWithDelegation.html Replace Inheritance with Delegation]
