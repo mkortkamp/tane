@@ -1,3 +1,5 @@
-# extract a block and create a new class that is used in place of the block with parameters as needed.
+#summary extract a block and create a new class that is used in place of the block with parameters as needed.
 
-See [http://en.wikipedia.org/wiki/Strategy_pattern The Strategy Pattern]
+See [http://en.wikipedia.org/wiki/Strategy_pattern The Strategy Pattern] for details about the strategy pattern.
+
+This refactoring will result in a new class, the strategy, to be created and potentially injected into the original class, thus enabling different strategies to be used by the original class.
