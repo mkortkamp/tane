@@ -3,3 +3,4 @@
   * [http://www.refactoring.com/catalog/replaceInheritanceWithDelegation.html Replace Inheritance with Delegation]
   * [http://www.refactoring.com/catalog/reduceScopeOfVariable.html Reduce Scope of Variable]
   * [http://www.refactoring.com/catalog/collapseHierarchy.html Collapse Hierarchy]
+  * [http://www.refactoring.com/catalog/replaceMethodWithMethodObject.html Replace Method with Method Object]
