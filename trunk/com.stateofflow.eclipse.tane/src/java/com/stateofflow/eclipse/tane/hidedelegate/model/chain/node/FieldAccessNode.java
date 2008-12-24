@@ -12,41 +12,42 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.Rewrite;
 
 class FieldAccessNode extends AbstractChainNode {
-    private final FieldAccess node;
+	private final FieldAccess node;
 
-    public FieldAccessNode(final FieldAccess node) {
-        this.node = node;
-    }
+	public FieldAccessNode(final FieldAccess node) {
+		this.node = node;
+	}
 
-    public void copyInvocationArguments(final MethodInvocation replacement) {
-    }
+	public void copyInvocationArguments(final MethodInvocation replacement) {
+	}
 
-    public void copyParameters(final MethodDeclaration newMethodDeclaration, final Rewrite rewrite) {
-    }
+	public void copyParameters(final MethodDeclaration newMethodDeclaration, final Rewrite rewrite) {
+	}
 
-    public IBinding getDeclaringClassOfMember() {
-        return getDeclarationOfMember().getDeclaringClass();
-    }
+	public IBinding getDeclaringClassOfMember() {
+		return getDeclarationOfMember().getDeclaringClass();
+	}
 
-    public ITypeBinding[] getExceptionTypes() {
-        return new ITypeBinding[0];
-    }
+	public ITypeBinding[] getExceptionTypes() {
+		return new ITypeBinding[0];
+	}
 
-    @Override
-    protected Expression getLeftHandSide() {
-        return node.getExpression();
-    }
+	@Override
+	protected Expression getLeftHandSide() {
+		return node.getExpression();
+	}
 
-    public ITypeBinding getTypeOfMember() {
-        return node.resolveTypeBinding();
-    }
+	public ITypeBinding getTypeOfMember() {
+		return node.resolveTypeBinding();
+	}
 
-    public boolean matches(final ASTNode node) {
-        return node.getNodeType() == ASTNode.FIELD_ACCESS && getDeclarationOfMember().isEqualTo(((FieldAccess) node).resolveFieldBinding());
-    }
+	public boolean matches(final ASTNode astNode) {
+		return astNode.getNodeType() == ASTNode.FIELD_ACCESS
+				&& getDeclarationOfMember().isEqualTo(((FieldAccess) astNode).resolveFieldBinding());
+	}
 
-    @Override
-    protected IVariableBinding getDeclarationOfMember() {
-        return node.resolveFieldBinding();
-    }
+	@Override
+	protected IVariableBinding getDeclarationOfMember() {
+		return node.resolveFieldBinding();
+	}
 }

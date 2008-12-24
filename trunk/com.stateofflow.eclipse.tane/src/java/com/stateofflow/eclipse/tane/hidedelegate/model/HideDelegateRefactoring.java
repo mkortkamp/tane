@@ -5,7 +5,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -21,55 +20,57 @@ import com.stateofflow.eclipse.tane.util.MemberFinder;
 import com.stateofflow.eclipse.tane.util.Selection;
 
 public class HideDelegateRefactoring extends Refactoring {
-    private String methodName;
-    private final Selection selection;
-    private RewriteMap rewrites;
-    private Scope scope;
+	private String methodName;
+	private final Selection selection;
+	private RewriteMap rewrites;
+	private Scope scope;
 
-    public HideDelegateRefactoring(final ICompilationUnit compilationUnit, final TextSelection textSelection) {
-        selection = new Selection(compilationUnit, textSelection);
-    }
+	public HideDelegateRefactoring(final ICompilationUnit compilationUnit, final TextSelection textSelection) {
+		selection = new Selection(compilationUnit, textSelection);
+	}
 
-    @Override
-    public RefactoringStatus checkFinalConditions(final IProgressMonitor pm) throws CoreException, OperationCanceledException {
-        final SubMonitor monitor = SubMonitor.convert(pm, "Checking final conditions", 1);
-        try {
-            final RefactoringStatus status = new RefactoringStatus();
-            rewrites = getChain().createRewriteMap(new MemberFinder(createJavaSearchScope()), new MemberFinder(SearchEngine.createWorkspaceScope()), new RewriteMapBuilder(status), methodName, monitor.newChild(1));
-            return status;
-        } finally {
-            pm.done();
-        }
-    }
+	@Override
+	public RefactoringStatus checkFinalConditions(final IProgressMonitor pm) throws CoreException, OperationCanceledException {
+		final SubMonitor monitor = SubMonitor.convert(pm, "Checking final conditions", 1);
+		try {
+			final RefactoringStatus status = new RefactoringStatus();
+			rewrites = getChain().createRewriteMap(new MemberFinder(createJavaSearchScope()),
+					new MemberFinder(SearchEngine.createWorkspaceScope()), new RewriteMapBuilder(status), methodName, monitor.newChild(1));
+			return status;
+		} finally {
+			pm.done();
+		}
+	}
 
-    private Chain getChain() {
-        return new Chain((Expression) selection.getParentOfNodeAtStartOfSelection(), (Expression) selection.getNodeEncompassingWholeSelection());
-    }
+	private Chain getChain() {
+		return new Chain((Expression) selection.getParentOfNodeAtStartOfSelection(), (Expression) selection
+				.getNodeEncompassingWholeSelection());
+	}
 
-    @Override
-    public RefactoringStatus checkInitialConditions(final IProgressMonitor pm) throws CoreException, OperationCanceledException {
-        return new InitialConditionValidator(selection).checkInitialConditions();
-    }
+	@Override
+	public RefactoringStatus checkInitialConditions(final IProgressMonitor pm) throws CoreException, OperationCanceledException {
+		return new InitialConditionValidator(selection).checkInitialConditions();
+	}
 
-    @Override
-    public Change createChange(final IProgressMonitor pm) throws CoreException, OperationCanceledException {
-        return rewrites.createChange(getName());
-    }
+	@Override
+	public Change createChange(final IProgressMonitor pm) throws CoreException, OperationCanceledException {
+		return rewrites.createChange(getName());
+	}
 
-    @Override
-    public String getName() {
-        return "Hide Delegate";
-    }
+	@Override
+	public String getName() {
+		return "Hide Delegate";
+	}
 
-    public void setMethodName(final String methodName) {
-        this.methodName = methodName;
-    }
+	public void setMethodName(final String methodName) {
+		this.methodName = methodName;
+	}
 
-    private IJavaSearchScope createJavaSearchScope() throws JavaModelException {
-        return scope.createSearchEngineScope(selection.getCompilationUnit());
-    }
+	private IJavaSearchScope createJavaSearchScope() {
+		return scope.createSearchEngineScope(selection.getCompilationUnit());
+	}
 
-    public void setScope(final Scope scope) {
-        this.scope = scope;
-    }
+	public void setScope(final Scope scope) {
+		this.scope = scope;
+	}
 }
