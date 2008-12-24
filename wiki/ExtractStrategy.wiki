@@ -2,4 +2,4 @@
 
 See [http://en.wikipedia.org/wiki/Strategy_pattern The Strategy Pattern] for details about the strategy pattern.
 
-This refactoring will result in a new class, the strategy, to be created and potentially injected into the original class, thus enabling different strategies to be used by the original class.
+This refactoring will result in a new class, the strategy, to be created which is potentially injected into the original class, thus enabling different strategies to be used by the original class.
