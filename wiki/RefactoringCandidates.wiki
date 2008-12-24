@@ -7,3 +7,5 @@
   * [http://www.refactoring.com/catalog/replaceMethodWithMethodObject.html Replace Method with Method Object]
   * [http://www.refactoring.com/catalog/replaceSubclassWithFields.html Replace Subclass with Fields]
   * ExtractStrategy
+
+[http://www.refactoring.com/catalog/ More Refactorings]
