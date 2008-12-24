@@ -18,43 +18,43 @@ import org.eclipse.ui.PlatformUI;
 import com.stateofflow.eclipse.tane.hidedelegate.model.HideDelegateRefactoring;
 
 public class HideDelegateAction implements IEditorActionDelegate {
-    private ICompilationUnit compilationUnit;
-    private TextSelection selection;
+	private ICompilationUnit compilationUnit;
+	private TextSelection selection;
 
-    private Shell getShell() {
-        final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        if (window == null) {
-            return null;
-        }
-        return window.getShell();
-    }
+	private Shell getShell() {
+		final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (window == null) {
+			return null;
+		}
+		return window.getShell();
+	}
 
-    public void run(final IAction action) {
-        if (compilationUnit == null || selection == null) {
-            return;
-        }
-        final HideDelegateRefactoring refactoring = new HideDelegateRefactoring(compilationUnit, selection);
-        final RefactoringWizard wizard = new HideDelegateRefactoringWizard(refactoring);
-        try {
-            new RefactoringWizardOpenOperation(wizard).run(getShell(), "Hide Delegate");
-        } catch (final InterruptedException e) {
-            // Canceled
-        }
-    }
+	public void run(final IAction action) {
+		if (compilationUnit == null || selection == null) {
+			return;
+		}
+		final HideDelegateRefactoring refactoring = new HideDelegateRefactoring(compilationUnit, selection);
+		final RefactoringWizard wizard = new HideDelegateRefactoringWizard(refactoring);
+		try {
+			new RefactoringWizardOpenOperation(wizard).run(getShell(), "Hide Delegate");
+		} catch (final InterruptedException e) {
+			// Canceled
+		}
+	}
 
-    public void selectionChanged(final IAction action, final ISelection selection) {
-        this.selection = selection instanceof TextSelection ? (TextSelection) selection : null;
-    }
+	public void selectionChanged(final IAction action, final ISelection newSelection) {
+		this.selection = newSelection instanceof TextSelection ? (TextSelection) newSelection : null;
+	}
 
-    public void setActiveEditor(final IAction action, final IEditorPart editor) {
-        compilationUnit = editor == null ? null : getCompilationUnit(editor.getEditorInput());
-    }
+	public void setActiveEditor(final IAction action, final IEditorPart editor) {
+		compilationUnit = editor == null ? null : getCompilationUnit(editor.getEditorInput());
+	}
 
-    private ICompilationUnit getCompilationUnit(final IEditorInput editorInput) {
-        return editorInput == null ? null : getCompilationUnit((IFile) editorInput.getAdapter(IFile.class));
-    }
+	private ICompilationUnit getCompilationUnit(final IEditorInput editorInput) {
+		return editorInput == null ? null : getCompilationUnit((IFile) editorInput.getAdapter(IFile.class));
+	}
 
-    private ICompilationUnit getCompilationUnit(final IFile file) {
-        return file == null ? null : JavaCore.createCompilationUnitFrom(file);
-    }
+	private ICompilationUnit getCompilationUnit(final IFile file) {
+		return file == null ? null : JavaCore.createCompilationUnitFrom(file);
+	}
 }

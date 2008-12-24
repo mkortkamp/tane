@@ -15,58 +15,59 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.Rewrite;
 
 class MethodInvocationNode extends AbstractChainNode {
-    private final MethodInvocation node;
+	private final MethodInvocation node;
 
-    public MethodInvocationNode(final MethodInvocation node) {
-        this.node = node;
-    }
+	public MethodInvocationNode(final MethodInvocation node) {
+		this.node = node;
+	}
 
-    @SuppressWarnings("unchecked")
-    public void copyInvocationArguments(final MethodInvocation destination) {
-        final Iterator<Expression> iter = node.arguments().iterator();
-        while (iter.hasNext()) {
-            destination.arguments().add(ASTNode.copySubtree(destination.getAST(), iter.next()));
-        }
-    }
+	@SuppressWarnings("unchecked")
+	public void copyInvocationArguments(final MethodInvocation destination) {
+		final Iterator<Expression> iter = node.arguments().iterator();
+		while (iter.hasNext()) {
+			destination.arguments().add(ASTNode.copySubtree(destination.getAST(), iter.next()));
+		}
+	}
 
-    private SingleVariableDeclaration copyParameter(final MethodDeclaration destination, final Rewrite rewrite, final ITypeBinding type) {
-        final AST ast = destination.getAST();
-        final SingleVariableDeclaration parameter = ast.newSingleVariableDeclaration();
-        parameter.setType(rewrite.addImportReturningType(type));
-        parameter.setName(ast.newSimpleName("p" + destination.parameters().size()));
-        return parameter;
-    }
+	private SingleVariableDeclaration copyParameter(final MethodDeclaration destination, final Rewrite rewrite, final ITypeBinding type) {
+		final AST ast = destination.getAST();
+		final SingleVariableDeclaration parameter = ast.newSingleVariableDeclaration();
+		parameter.setType(rewrite.addImportReturningType(type));
+		parameter.setName(ast.newSimpleName("p" + destination.parameters().size()));
+		return parameter;
+	}
 
-    @SuppressWarnings("unchecked")
-    public void copyParameters(final MethodDeclaration newMethodDeclaration, final Rewrite rewrite) {
-        for (final ITypeBinding parameterType : getDeclarationOfMember().getParameterTypes()) {
-            newMethodDeclaration.parameters().add(copyParameter(newMethodDeclaration, rewrite, parameterType));
-        }
-    }
+	@SuppressWarnings("unchecked")
+	public void copyParameters(final MethodDeclaration newMethodDeclaration, final Rewrite rewrite) {
+		for (final ITypeBinding parameterType : getDeclarationOfMember().getParameterTypes()) {
+			newMethodDeclaration.parameters().add(copyParameter(newMethodDeclaration, rewrite, parameterType));
+		}
+	}
 
-    public IBinding getDeclaringClassOfMember() {
-        return getDeclarationOfMember().getDeclaringClass();
-    }
+	public IBinding getDeclaringClassOfMember() {
+		return getDeclarationOfMember().getDeclaringClass();
+	}
 
-    public ITypeBinding[] getExceptionTypes() {
-        return getDeclarationOfMember().getExceptionTypes();
-    }
+	public ITypeBinding[] getExceptionTypes() {
+		return getDeclarationOfMember().getExceptionTypes();
+	}
 
-    @Override
-    protected Expression getLeftHandSide() {
-        return node.getExpression();
-    }
+	@Override
+	protected Expression getLeftHandSide() {
+		return node.getExpression();
+	}
 
-    public ITypeBinding getTypeOfMember() {
-        return node.resolveTypeBinding();
-    }
+	public ITypeBinding getTypeOfMember() {
+		return node.resolveTypeBinding();
+	}
 
-    @Override
-    protected IMethodBinding getDeclarationOfMember() {
-        return node.resolveMethodBinding();
-    }
+	@Override
+	protected IMethodBinding getDeclarationOfMember() {
+		return node.resolveMethodBinding();
+	}
 
-    public boolean matches(final ASTNode node) {
-        return node.getNodeType() == ASTNode.METHOD_INVOCATION && getDeclarationOfMember().isEqualTo(((MethodInvocation) node).resolveMethodBinding());
-    }
+	public boolean matches(final ASTNode astNode) {
+		return astNode.getNodeType() == ASTNode.METHOD_INVOCATION
+				&& getDeclarationOfMember().isEqualTo(((MethodInvocation) astNode).resolveMethodBinding());
+	}
 }
