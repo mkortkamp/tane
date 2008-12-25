@@ -37,6 +37,7 @@ import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.visibility.Visibi
 import com.stateofflow.eclipse.tane.util.CompilationUnitSearchMatchGrouper;
 import com.stateofflow.eclipse.tane.util.MemberFinder;
 import com.stateofflow.eclipse.tane.util.TypeSetMinimizer;
+import com.stateofflow.eclipse.tane.validation.Validator;
 
 public class Chain implements Iterable<ChainNode>, Rewriter {
 	private final Expression origin;
@@ -78,33 +79,37 @@ public class Chain implements Iterable<ChainNode>, Rewriter {
 		return new ChainNodeFactory().createNode(node);
 	}
 
-	MethodInvocation createReplacementMethodInvocation(final String methodName) {
-		final AST ast = root.getAST();
-		final MethodInvocation replacement = ast.newMethodInvocation();
-		replacement.setName(ast.newSimpleName(methodName));
-		createNode(origin).copyExpression(replacement);
-		return replacement;
+    MethodInvocation createReplacementMethodInvocation(final String methodName) {
+        final AST ast = root.getAST();
+        final MethodInvocation replacement = ast.newMethodInvocation();
+        replacement.setName(ast.newSimpleName(methodName));
+        createOriginNode().copyExpression(replacement);
+        return replacement;
+    }
+
+    public IType getDeclaringTypeOfOrigin() {
+        return (IType) createOriginNode().getDeclaringClassOfMember().getJavaElement();
+    }
+
+	private ChainNode createOriginNode() {
+		return createNode(origin);
 	}
 
-	public IType getDeclaringTypeOfOrigin() {
-		return (IType) createNode(origin).getDeclaringClassOfMember().getJavaElement();
-	}
-
-	public ITypeBinding getReturnType() {
-		return createNode(root).getTypeOfMember();
-	}
+    public ITypeBinding getReturnType() {
+        return createNode(root).getTypeOfMember();
+    }
 
 	private ICompilationUnit getOriginCompilationUnit() {
 		return getDeclaringTypeOfOrigin().getCompilationUnit();
 	}
 
-	private IMember getOriginJavaElement() {
-		return createNode(origin).getJavaElementOfMember();
-	}
+    private IMember getOriginJavaElement() {
+        return createOriginNode().getJavaElementOfMember();
+    }
 
-	public int getOriginModifiers() {
-		return createNode(origin).getModifiersForMember();
-	}
+    public int getOriginModifiers() {
+        return createOriginNode().getModifiersForMember();
+    }
 
 	boolean isVoidExpressionType() {
 		final ITypeBinding returnType = getReturnType();
@@ -185,11 +190,15 @@ public class Chain implements Iterable<ChainNode>, Rewriter {
 		return new TypeSetMinimizer().getMinimalSet(getAllThrownExceptions());
 	}
 
-	private Set<ITypeBinding> getAllThrownExceptions() {
-		final HashSet<ITypeBinding> exceptions = new HashSet<ITypeBinding>();
-		for (final ChainNode node : this) {
-			exceptions.addAll(asList(node.getExceptionTypes()));
-		}
-		return exceptions;
+    private Set<ITypeBinding> getAllThrownExceptions() {
+        final HashSet<ITypeBinding> exceptions = new HashSet<ITypeBinding>();
+        for (final ChainNode node : this) {
+            exceptions.addAll(asList(node.getExceptionTypes()));
+        }
+        return exceptions;
+    }
+
+	public void validate(Validator validator) throws JavaModelException {
+		createOriginNode().validateAsOrigin(validator);
 	}
 }
