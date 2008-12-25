@@ -18,6 +18,7 @@ import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.map.RewriteMap;
 import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.map.RewriteMapBuilder;
 import com.stateofflow.eclipse.tane.util.MemberFinder;
 import com.stateofflow.eclipse.tane.util.Selection;
+import com.stateofflow.eclipse.tane.validation.RefactoringStatusValidator;
 
 public class HideDelegateRefactoring extends Refactoring {
 	private String methodName;
@@ -47,10 +48,13 @@ public class HideDelegateRefactoring extends Refactoring {
 				.getNodeEncompassingWholeSelection());
 	}
 
-	@Override
-	public RefactoringStatus checkInitialConditions(final IProgressMonitor pm) throws CoreException, OperationCanceledException {
-		return new InitialConditionValidator(selection).checkInitialConditions();
-	}
+    @Override
+    public RefactoringStatus checkInitialConditions(final IProgressMonitor pm) throws CoreException, OperationCanceledException {
+		RefactoringStatus status = new RefactoringStatus();
+		RefactoringStatusValidator validator = new RefactoringStatusValidator(status);
+		new InitialConditionValidator(selection, validator).checkInitialConditions();
+		return status;
+    }
 
 	@Override
 	public Change createChange(final IProgressMonitor pm) throws CoreException, OperationCanceledException {

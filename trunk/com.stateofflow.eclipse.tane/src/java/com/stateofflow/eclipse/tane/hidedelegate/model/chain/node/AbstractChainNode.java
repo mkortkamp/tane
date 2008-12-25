@@ -3,10 +3,13 @@ package com.stateofflow.eclipse.tane.hidedelegate.model.chain.node;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+
+import com.stateofflow.eclipse.tane.validation.Validator;
 
 abstract class AbstractChainNode implements ChainNode {
     public final void copyExpression(final MethodInvocation destination) {
@@ -38,4 +41,9 @@ abstract class AbstractChainNode implements ChainNode {
     protected String describe() {
         return getDeclaringTypeOfMember().getFullyQualifiedName() + "." + getDeclarationOfMember().getName();
     }
+
+	public void validateAsOrigin(Validator validator) throws JavaModelException {
+		validator.validate(!getDeclaringTypeOfMember().isInterface(), "Cannot encapsulate on an interface: " + getDeclaringTypeOfMember().getFullyQualifiedName());
+	    validator.validate(!getDeclaringTypeOfMember().isBinary(), "Target source is not available: " + getDeclaringTypeOfMember().getFullyQualifiedName());
+	}
 }
