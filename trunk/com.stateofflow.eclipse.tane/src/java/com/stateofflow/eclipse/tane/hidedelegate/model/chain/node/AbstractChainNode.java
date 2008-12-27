@@ -43,7 +43,11 @@ abstract class AbstractChainNode implements ChainNode {
     }
 
 	public void validateAsOrigin(Validator validator) throws JavaModelException {
-		validator.validate(!getDeclaringTypeOfMember().isInterface(), "Cannot encapsulate on an interface: " + getDeclaringTypeOfMember().getFullyQualifiedName());
-	    validator.validate(!getDeclaringTypeOfMember().isBinary(), "Target source is not available: " + getDeclaringTypeOfMember().getFullyQualifiedName());
+		validate(validator, !getDeclaringTypeOfMember().isInterface(), "Cannot encapsulate on an interface");
+	    validate(validator, !getDeclaringTypeOfMember().isBinary(), "Target source is not available");
+	}
+
+	private boolean validate(Validator validator, boolean valid, String message) {
+		return validator.validate(valid, message + ": " + getDeclaringTypeOfMember().getFullyQualifiedName());
 	}
 }
