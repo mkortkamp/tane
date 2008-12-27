@@ -8,7 +8,7 @@ import com.stateofflow.eclipse.tane.validation.NotNullValidatable;
 import com.stateofflow.eclipse.tane.validation.Validatable;
 import com.stateofflow.eclipse.tane.validation.Validator;
 
-public class RootNodeValidateable implements Validatable {
+class RootNodeValidateable implements Validatable {
 	private static final String BASIC_FAILURE_MESSAGE = "This refactoring can only be applied to method invocation chains with an optional field access as the final item in the chain.";
 
 	private final ASTNode root;
