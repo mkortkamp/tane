@@ -1,9 +1,9 @@
 package com.stateofflow.eclipse.tane.hidedelegate.model.chain.node;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -36,5 +36,5 @@ public interface ChainNode {
 
     IType getDeclaringTypeOfMember();
 
-	void validateAsOrigin(Validator validator) throws JavaModelException;
+	void validateAsOrigin(Validator validator) throws CoreException;
 }

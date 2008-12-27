@@ -1,5 +1,8 @@
 package com.stateofflow.eclipse.tane;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -25,4 +28,8 @@ public class Activator extends AbstractUIPlugin {
         plugin = null;
         super.stop(context);
     }
+
+	public static void log(String message, Exception e) {
+		getDefault().getLog().log(new Status(IStatus.WARNING, PLUGIN_ID, message, e));
+	}
 }

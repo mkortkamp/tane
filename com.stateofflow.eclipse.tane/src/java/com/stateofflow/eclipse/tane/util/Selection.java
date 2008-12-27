@@ -8,7 +8,11 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jface.text.TextSelection;
 
-public class Selection {
+import com.stateofflow.eclipse.tane.Activator;
+import com.stateofflow.eclipse.tane.validation.Validatable;
+import com.stateofflow.eclipse.tane.validation.Validator;
+
+public class Selection implements Validatable {
     private final ICompilationUnit compilationUnit;
     private final TextSelection selection;
     private CompilationUnit parsedCompilationUnit;
@@ -43,5 +47,15 @@ public class Selection {
 
     public ICompilationUnit getCompilationUnit() {
         return compilationUnit;
+    }
+    
+    public void validate(Validator validator) {
+    	try {
+			validator.validate(isStructureKnown(), "The structure of the compilation unit is not known");
+		} catch (JavaModelException e) {
+			Activator.log("Caught a JavaModelException while trying to validate", e);
+			validator.validate(false, "An error occurred while trying to validate. Please see the error log.");
+		}
+    	validator.validate(isSomethingSelected(), "Please select something to use this refactoring");
     }
 }

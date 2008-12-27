@@ -37,9 +37,10 @@ import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.visibility.Visibi
 import com.stateofflow.eclipse.tane.util.CompilationUnitSearchMatchGrouper;
 import com.stateofflow.eclipse.tane.util.MemberFinder;
 import com.stateofflow.eclipse.tane.util.TypeSetMinimizer;
+import com.stateofflow.eclipse.tane.validation.Validatable;
 import com.stateofflow.eclipse.tane.validation.Validator;
 
-public class Chain implements Iterable<ChainNode>, Rewriter {
+public class Chain implements Iterable<ChainNode>, Rewriter, Validatable {
 	private final Expression origin;
 	private final Expression root;
 
@@ -198,7 +199,7 @@ public class Chain implements Iterable<ChainNode>, Rewriter {
         return exceptions;
     }
 
-	public void validate(Validator validator) throws JavaModelException {
+	public void validate(Validator validator) throws CoreException {
 		createOriginNode().validateAsOrigin(validator);
 	}
 }
