@@ -24,6 +24,17 @@
                menubarPath="additions">
          </action>
       </viewerContribution>
+      <viewerContribution
+            id="com.stateofflow.eclipse.tane.extractstrategy.popupmenu"
+            targetID="#CompilationUnitEditorContext">
+         <action
+               class="com.stateofflow.eclipse.tane.extractstrategy.ui.ExtractStrategyAction"
+               definitionId="com.stateofflow.eclipse.tane.extractstrategy.command"
+               id="com.stateofflow.eclipse.tane.extractstrategy.action"
+               label="Extract Strategy"
+               menubarPath="additions">
+         </action>
+      </viewerContribution>
    </extension>
    <extension
          point="org.eclipse.help.toc">
