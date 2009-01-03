@@ -23,10 +23,7 @@ public class ASTUtils {
 
     @SuppressWarnings("unchecked")
     public static <T extends ASTNode> T getAncestor(ASTNode node, final Class<T> parentClass) {
-        do {
-            node = node.getParent();
-        } while (node != null && !parentClass.isInstance(node));
-        return (T) node;
+    	return node == null || parentClass.isInstance(node) ? (T) node : getAncestor(node.getParent(), parentClass);
     }
 
     public static ASTNode getDeclarationForType(final CompilationUnit root, final IType type) throws JavaModelException {
