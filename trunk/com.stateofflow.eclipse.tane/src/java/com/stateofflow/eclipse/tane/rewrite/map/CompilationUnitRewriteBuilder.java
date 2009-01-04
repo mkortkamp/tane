@@ -1,4 +1,4 @@
-package com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.map;
+package com.stateofflow.eclipse.tane.rewrite.map;
 
 import static com.stateofflow.eclipse.tane.util.ASTUtils.*;
 
@@ -15,8 +15,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.search.SearchMatch;
 
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.Rewrite;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.visibility.VisibilityChangeException;
+import com.stateofflow.eclipse.tane.rewrite.Rewrite;
+import com.stateofflow.eclipse.tane.rewrite.visibility.VisibilityChangeException;
 
 class CompilationUnitRewriteBuilder {
     private final Map<ICompilationUnit, Set<SearchMatch>> chainOriginReferencesByCompilationUnit;

@@ -1,6 +1,8 @@
-package com.stateofflow.eclipse.tane.hidedelegate.model.rewrite;
+package com.stateofflow.eclipse.tane.rewrite;
 
 import static com.stateofflow.eclipse.tane.util.ASTUtils.*;
+
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -15,6 +17,7 @@ import org.eclipse.jdt.core.dom.ExpressionStatement;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.Type;
@@ -23,8 +26,8 @@ import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.visibility.VisibilityChangeException;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.visibility.VisibilityRewrite;
+import com.stateofflow.eclipse.tane.rewrite.visibility.VisibilityChangeException;
+import com.stateofflow.eclipse.tane.rewrite.visibility.VisibilityRewrite;
 
 public class Rewrite {
     private final ICompilationUnit compilationUnit;
@@ -51,7 +54,7 @@ public class Rewrite {
         astRewrite.getListRewrite(getDeclarationForType(parsedCompilationUnit, type), getBodyDeclarationPropertyForType(parsedCompilationUnit, type)).insertLast(methodDeclaration, null);
     }
 
-    private AST getAST() {
+    public AST getAST() {
         return parsedCompilationUnit.getAST();
     }
 
@@ -96,7 +99,11 @@ public class Rewrite {
         return (T) ASTNode.copySubtree(getAST(), subtree);
     }
 
-    public void buildActualParameterList(final Expression root, final Expression copy) {
-        new ActualParameterListBuilder(getAST()).safeSubtreeMatch(root, copy);
-    }
+	public void copyExceptions(Set<ITypeBinding> exceptions, MethodDeclaration methodDeclaration) {
+        new ExceptionSetCopier().copy(this, methodDeclaration, exceptions);
+	}
+
+	public Name newName(ITypeBinding type) {
+		return getAST().newName(addImportReturningString(type));
+	}
 }

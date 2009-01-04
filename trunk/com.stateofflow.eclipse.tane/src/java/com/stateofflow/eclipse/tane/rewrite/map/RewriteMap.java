@@ -1,4 +1,4 @@
-package com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.map;
+package com.stateofflow.eclipse.tane.rewrite.map;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.Rewrite;
+import com.stateofflow.eclipse.tane.rewrite.Rewrite;
 
 public class RewriteMap {
     private final Map<ICompilationUnit, Rewrite> rewrites = new HashMap<ICompilationUnit, Rewrite>();

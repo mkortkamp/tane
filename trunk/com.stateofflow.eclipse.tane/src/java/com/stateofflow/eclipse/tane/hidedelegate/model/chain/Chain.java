@@ -26,14 +26,13 @@ import org.eclipse.jdt.core.search.SearchMatch;
 
 import com.stateofflow.eclipse.tane.hidedelegate.model.chain.node.ChainNode;
 import com.stateofflow.eclipse.tane.hidedelegate.model.chain.node.ChainNodeFactory;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.ASTTruncater;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.Rewrite;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.map.Refactor;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.map.RewriteMap;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.map.RewriteMapBuilder;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.map.Rewriter;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.visibility.VisibilityChangeException;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.visibility.VisibilityRewrite;
+import com.stateofflow.eclipse.tane.rewrite.Rewrite;
+import com.stateofflow.eclipse.tane.rewrite.map.Refactor;
+import com.stateofflow.eclipse.tane.rewrite.map.RewriteMap;
+import com.stateofflow.eclipse.tane.rewrite.map.RewriteMapBuilder;
+import com.stateofflow.eclipse.tane.rewrite.map.Rewriter;
+import com.stateofflow.eclipse.tane.rewrite.visibility.VisibilityChangeException;
+import com.stateofflow.eclipse.tane.rewrite.visibility.VisibilityRewrite;
 import com.stateofflow.eclipse.tane.util.CompilationUnitSearchMatchGrouper;
 import com.stateofflow.eclipse.tane.util.MemberFinder;
 import com.stateofflow.eclipse.tane.util.TypeSetMinimizer;
@@ -59,7 +58,7 @@ public class Chain implements Iterable<ChainNode>, Rewriter, Validatable {
 	public Expression copyExpression(final Rewrite rewrite) {
 		final Expression copy = rewrite.copySubtree(root);
 		new ASTTruncater(origin).safeSubtreeMatch(root, copy);
-		rewrite.buildActualParameterList(root, copy);
+		new ActualParameterListBuilder(rewrite.getAST()).safeSubtreeMatch(root, copy);
 		return copy;
 	}
 

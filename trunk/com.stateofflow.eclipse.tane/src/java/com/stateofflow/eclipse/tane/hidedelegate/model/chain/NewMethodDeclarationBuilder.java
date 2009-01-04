@@ -4,9 +4,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 
 import com.stateofflow.eclipse.tane.hidedelegate.model.chain.node.ChainNode;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.ExceptionSetCopier;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.NewMethodBodyBuilder;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.Rewrite;
+import com.stateofflow.eclipse.tane.rewrite.Rewrite;
 
 class NewMethodDeclarationBuilder {
     private final Rewrite rewrite;
@@ -64,7 +62,7 @@ class NewMethodDeclarationBuilder {
     }
 
     private void addExceptions() {
-        new ExceptionSetCopier().copy(rewrite, methodDeclaration, chain.getThrownExceptions());
+    	rewrite.copyExceptions(chain.getThrownExceptions(), methodDeclaration);
     }
 
     private void addName(final String methodName) {

@@ -12,7 +12,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.Rewrite;
+import com.stateofflow.eclipse.tane.rewrite.Rewrite;
 
 class MethodInvocationNode extends AbstractChainNode {
 	private final MethodInvocation node;

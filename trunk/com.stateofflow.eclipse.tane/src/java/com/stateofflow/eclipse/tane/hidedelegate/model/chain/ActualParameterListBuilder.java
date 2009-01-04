@@ -1,4 +1,4 @@
-package com.stateofflow.eclipse.tane.hidedelegate.model.rewrite;
+package com.stateofflow.eclipse.tane.hidedelegate.model.chain;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTMatcher;
