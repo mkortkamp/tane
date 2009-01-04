@@ -26,11 +26,11 @@ import org.eclipse.jdt.core.search.SearchMatch;
 
 import com.stateofflow.eclipse.tane.hidedelegate.model.chain.node.ChainNode;
 import com.stateofflow.eclipse.tane.hidedelegate.model.chain.node.ChainNodeFactory;
+import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.Refactor;
+import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.RewriteMap;
+import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.RewriteMapBuilder;
+import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.Rewriter;
 import com.stateofflow.eclipse.tane.rewrite.Rewrite;
-import com.stateofflow.eclipse.tane.rewrite.map.Refactor;
-import com.stateofflow.eclipse.tane.rewrite.map.RewriteMap;
-import com.stateofflow.eclipse.tane.rewrite.map.RewriteMapBuilder;
-import com.stateofflow.eclipse.tane.rewrite.map.Rewriter;
 import com.stateofflow.eclipse.tane.rewrite.visibility.VisibilityChangeException;
 import com.stateofflow.eclipse.tane.rewrite.visibility.VisibilityRewrite;
 import com.stateofflow.eclipse.tane.util.CompilationUnitSearchMatchGrouper;

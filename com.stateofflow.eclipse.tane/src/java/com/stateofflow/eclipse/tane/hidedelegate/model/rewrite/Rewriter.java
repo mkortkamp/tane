@@ -1,4 +1,4 @@
-package com.stateofflow.eclipse.tane.rewrite.map;
+package com.stateofflow.eclipse.tane.hidedelegate.model.rewrite;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.JavaModelException;
