@@ -1,4 +1,4 @@
-package com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.visibility;
+package com.stateofflow.eclipse.tane.rewrite.visibility;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;

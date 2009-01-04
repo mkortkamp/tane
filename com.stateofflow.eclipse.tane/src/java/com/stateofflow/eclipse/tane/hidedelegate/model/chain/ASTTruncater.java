@@ -1,11 +1,11 @@
-package com.stateofflow.eclipse.tane.hidedelegate.model.rewrite;
+package com.stateofflow.eclipse.tane.hidedelegate.model.chain;
 
 import org.eclipse.jdt.core.dom.ASTMatcher;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.FieldAccess;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
-public class ASTTruncater extends ASTMatcher {
+class ASTTruncater extends ASTMatcher {
     private final Expression origin;
 
     public ASTTruncater(final Expression origin) {

@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.Rewrite;
+import com.stateofflow.eclipse.tane.rewrite.Rewrite;
 import com.stateofflow.eclipse.tane.validation.Validator;
 
 public interface ChainNode {

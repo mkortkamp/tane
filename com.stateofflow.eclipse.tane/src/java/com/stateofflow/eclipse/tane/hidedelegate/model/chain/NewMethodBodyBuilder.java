@@ -1,12 +1,14 @@
-package com.stateofflow.eclipse.tane.hidedelegate.model.rewrite;
+package com.stateofflow.eclipse.tane.hidedelegate.model.chain;
 
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
 
+import com.stateofflow.eclipse.tane.rewrite.Rewrite;
 
-public class NewMethodBodyBuilder {
+
+class NewMethodBodyBuilder {
     @SuppressWarnings("unchecked")
     public Block build(final Rewrite rewrite, final Expression expression, final boolean voidReturnType) {
         final Block body = rewrite.newBlock();

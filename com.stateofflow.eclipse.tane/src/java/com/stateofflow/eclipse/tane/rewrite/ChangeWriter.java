@@ -1,4 +1,4 @@
-package com.stateofflow.eclipse.tane.hidedelegate.model.rewrite;
+package com.stateofflow.eclipse.tane.rewrite;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;

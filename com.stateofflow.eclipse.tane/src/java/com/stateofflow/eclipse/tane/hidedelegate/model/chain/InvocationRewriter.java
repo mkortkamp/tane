@@ -3,7 +3,7 @@ package com.stateofflow.eclipse.tane.hidedelegate.model.chain;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import com.stateofflow.eclipse.tane.hidedelegate.model.chain.node.ChainNode;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.Rewrite;
+import com.stateofflow.eclipse.tane.rewrite.Rewrite;
 
 class InvocationRewriter {
 	private void copyInvocationArguments(final Chain chain, final MethodInvocation replacement) {

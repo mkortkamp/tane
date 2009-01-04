@@ -1,12 +1,12 @@
-package com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.map;
+package com.stateofflow.eclipse.tane.rewrite.map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.Rewrite;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.visibility.VisibilityChangeException;
+import com.stateofflow.eclipse.tane.rewrite.Rewrite;
+import com.stateofflow.eclipse.tane.rewrite.visibility.VisibilityChangeException;
 
 public class Refactor {
     private final String methodName;

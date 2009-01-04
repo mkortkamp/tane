@@ -1,4 +1,4 @@
-package com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.map;
+package com.stateofflow.eclipse.tane.rewrite.map;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
 import com.stateofflow.eclipse.tane.Activator;
-import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.visibility.VisibilityChangeException;
+import com.stateofflow.eclipse.tane.rewrite.visibility.VisibilityChangeException;
 import com.stateofflow.eclipse.tane.util.Parser;
 
 public class RewriteMapBuilder {
