@@ -1,4 +1,4 @@
-package com.stateofflow.eclipse.tane.rewrite.map;
+package com.stateofflow.eclipse.tane.hidedelegate.model.rewrite;
 
 import java.util.HashSet;
 import java.util.Map;
