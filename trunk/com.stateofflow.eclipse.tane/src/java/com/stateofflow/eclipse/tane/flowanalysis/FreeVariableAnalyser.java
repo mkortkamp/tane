@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 public class FreeVariableAnalyser extends ASTVisitor {
-	private final Stack<Set<IVariableBinding>> stackFrame = new Stack<Set<IVariableBinding>>();
+	private final Stack<Set<IVariableBinding>> variableBindingFrames = new Stack<Set<IVariableBinding>>();
 	private final Set<IVariableBinding> freeVariables = new HashSet<IVariableBinding>();
 	private final int offset;
 	private final int length;
@@ -58,7 +58,7 @@ public class FreeVariableAnalyser extends ASTVisitor {
 	@Override
 	public boolean visit(VariableDeclarationFragment node) {
 		if (isInRange(node)) {
-			stackFrame.peek().add((IVariableBinding) node.getName().resolveBinding());
+			variableBindingFrames.peek().add((IVariableBinding) node.getName().resolveBinding());
 		}
 		return false;
 	}
@@ -83,7 +83,7 @@ public class FreeVariableAnalyser extends ASTVisitor {
 	}
 
 	private boolean isBound(IVariableBinding variableBinding) {
-		for (Set<IVariableBinding> frame : stackFrame) {
+		for (Set<IVariableBinding> frame : variableBindingFrames) {
 			if (frame.contains(variableBinding)) {
 				return true;
 			}
@@ -103,11 +103,11 @@ public class FreeVariableAnalyser extends ASTVisitor {
 	
 	private void popFrame(ASTNode node) {
 		if (isInRange(node)) {
-			stackFrame.pop();
+			variableBindingFrames.pop();
 		}
 	}
 	
 	private Set<IVariableBinding> pushFrame() {
-		return stackFrame.push(new HashSet<IVariableBinding>());
+		return variableBindingFrames.push(new HashSet<IVariableBinding>());
 	}
 }
