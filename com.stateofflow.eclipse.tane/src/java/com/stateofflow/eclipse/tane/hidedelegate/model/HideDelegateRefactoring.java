@@ -52,10 +52,9 @@ public class HideDelegateRefactoring extends Refactoring {
 
     @Override
     public RefactoringStatus checkInitialConditions(final IProgressMonitor pm) throws CoreException, OperationCanceledException {
-		RefactoringStatus status = new RefactoringStatus();
-		RefactoringStatusValidator validator = new RefactoringStatusValidator(status);
+		RefactoringStatusValidator validator = new RefactoringStatusValidator();
 		new InitialConditionValidator().validate(selection, validator);
-		return status;
+		return validator.getStatus();
     }
 
 	@Override

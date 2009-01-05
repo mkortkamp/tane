@@ -1,6 +1,9 @@
-package com.stateofflow.eclipse.tane.validation;
+package com.stateofflow.eclipse.tane.validation.validators;
 
 import org.eclipse.core.runtime.CoreException;
+
+import com.stateofflow.eclipse.tane.validation.Validatable;
+import com.stateofflow.eclipse.tane.validation.Validator;
 
 public class NotNullValidatable implements Validatable {
 	private final Object object;

@@ -1,7 +1,10 @@
-package com.stateofflow.eclipse.tane.validation;
+package com.stateofflow.eclipse.tane.validation.validators;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.dom.ASTNode;
+
+import com.stateofflow.eclipse.tane.validation.Validatable;
+import com.stateofflow.eclipse.tane.validation.Validator;
 
 public class ASTNodeTypeValidatable implements Validatable {
 	private final ASTNode node;
