@@ -4,12 +4,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
 public class RefactoringStatusValidator implements Validator {
-	private final RefactoringStatus status;
+	private final RefactoringStatus status = new RefactoringStatus();
 	
-	public RefactoringStatusValidator(RefactoringStatus status) {
-		this.status = status;
-	}
-
 	public boolean validate(boolean value, String message) {
         if (isOK() && !value) {
             status.addFatalError(message);
@@ -27,5 +23,9 @@ public class RefactoringStatusValidator implements Validator {
 	
 	public boolean isOK() {
 		return status.isOK();
+	}
+	
+	public RefactoringStatus getStatus() {
+		return status;
 	}
 }

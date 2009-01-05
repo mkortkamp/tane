@@ -1,20 +1,24 @@
 package com.stateofflow.eclipse.tane.util;
 
-import static com.stateofflow.eclipse.tane.util.ASTUtils.*;
+import static com.stateofflow.eclipse.tane.util.ASTUtils.findNode;
+
+import java.util.Set;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jface.text.TextSelection;
 
 import com.stateofflow.eclipse.tane.Activator;
+import com.stateofflow.eclipse.tane.flowanalysis.FreeVariableAnalyser;
 import com.stateofflow.eclipse.tane.validation.Validatable;
 import com.stateofflow.eclipse.tane.validation.Validator;
 
 public class Selection implements Validatable {
-    private final ICompilationUnit compilationUnit;
     private final TextSelection selection;
+    private final ICompilationUnit compilationUnit;
     private CompilationUnit parsedCompilationUnit;
 
     public Selection(final ICompilationUnit compilationUnit, final TextSelection selection) {
@@ -56,6 +60,12 @@ public class Selection implements Validatable {
 			Activator.log("Caught a JavaModelException while trying to validate", e);
 			validator.validate(false, "An error occurred while trying to validate. Please see the error log.");
 		}
-    	validator.validate(isSomethingSelected(), "Please select something to use this refactoring");
+    	validator.validate(isSomethingSelected(), "Please select something to refactor");
     }
+
+	public Set<IVariableBinding> getFreeVariables() {
+		FreeVariableAnalyser analyser = new FreeVariableAnalyser(selection.getOffset(), selection.getLength());
+		getNodeEncompassingWholeSelection().getParent().accept(analyser);
+		return analyser.getFreeVariables();
+	}
 }
