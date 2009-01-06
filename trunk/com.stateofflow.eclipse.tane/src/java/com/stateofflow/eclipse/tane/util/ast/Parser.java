@@ -1,4 +1,4 @@
-package com.stateofflow.eclipse.tane.util;
+package com.stateofflow.eclipse.tane.util.ast;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +13,8 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTRequestor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+
+import com.stateofflow.eclipse.tane.util.ProgressMonitorUtils;
 
 public class Parser {
     private ASTParser createParser() {

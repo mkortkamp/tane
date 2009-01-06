@@ -14,7 +14,7 @@ import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
 import com.stateofflow.eclipse.tane.Activator;
 import com.stateofflow.eclipse.tane.rewrite.visibility.VisibilityChangeException;
-import com.stateofflow.eclipse.tane.util.Parser;
+import com.stateofflow.eclipse.tane.util.ast.Parser;
 
 public class RewriteMapBuilder {
     private final RefactoringStatus status;

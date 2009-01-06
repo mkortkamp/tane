@@ -6,6 +6,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import com.stateofflow.eclipse.tane.util.Selection;
 import com.stateofflow.eclipse.tane.validation.RefactoringStatusValidator;
 import com.stateofflow.eclipse.tane.validation.validators.NoFreeVariableValidatable;
+import com.stateofflow.eclipse.tane.validation.validators.NoUnhandledExceptionValidatable;
 
 public class InitialConditionValidator {
 	private final RefactoringStatusValidator validator;
@@ -18,6 +19,7 @@ public class InitialConditionValidator {
 
 	public boolean validate() throws CoreException, OperationCanceledException {
 		return validator.validate(selection) //
-			&& validator.validate(new NoFreeVariableValidatable(selection));
+			&& validator.validate(new NoFreeVariableValidatable(selection)) //
+			&& validator.validate(new NoUnhandledExceptionValidatable(selection));
 	}
 }
