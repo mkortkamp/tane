@@ -1,4 +1,4 @@
-package com.stateofflow.eclipse.tane.util;
+package com.stateofflow.eclipse.tane.util.ast;
 
 import static org.eclipse.jdt.internal.corext.dom.NodeFinder.*;
 

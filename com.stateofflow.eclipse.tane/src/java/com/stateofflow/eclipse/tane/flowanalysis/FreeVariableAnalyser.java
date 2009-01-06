@@ -1,11 +1,5 @@
 package com.stateofflow.eclipse.tane.flowanalysis;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
-
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CatchClause;
 import org.eclipse.jdt.core.dom.IBinding;
@@ -13,52 +7,41 @@ import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
-public class FreeVariableAnalyser extends ASTVisitor {
-	private final Stack<Set<IVariableBinding>> variableBindingFrames = new Stack<Set<IVariableBinding>>();
-	private final Set<IVariableBinding> freeVariables = new HashSet<IVariableBinding>();
-	private final int offset;
-	private final int length;
+import com.stateofflow.eclipse.tane.util.Range;
 
-	public FreeVariableAnalyser(int offset, int length) {
-		this.offset = offset;
-		this.length = length;
-		pushFrame();
+public class FreeVariableAnalyser extends AbstractFrameBasedAnalyser<IVariableBinding> {
+	public FreeVariableAnalyser(Range range) {
+		super(range);
 	}
 
-	public Set<IVariableBinding> getFreeVariables() {
-		return freeVariables;
-	}
-	
-	public boolean isEmpty() {
-		return getFreeVariables().isEmpty();
-	}
-	
 	@Override
 	public boolean visit(Block node) {
 		pushFrame(node);
-		return true;
+		return super.visit(node);
 	}
 
 	@Override
 	public void endVisit(Block node) {
 		popFrame(node);
+		super.endVisit(node);
 	}
 	
 	@Override
 	public boolean visit(CatchClause node) {
 		pushFrame(node);
-		return true;
+		return super.visit(node);
 	}
 	
 	@Override
 	public void endVisit(CatchClause node) {
 		popFrame(node);
+		super.endVisit(node);
 	}
 	
 	@Override
 	public boolean visit(VariableDeclarationFragment node) {
 		if (isInRange(node)) {
-			variableBindingFrames.peek().add((IVariableBinding) node.getName().resolveBinding());
+			addToCurrentFrame((IVariableBinding) node.getName().resolveBinding());
 		}
 		return false;
 	}
@@ -75,39 +58,10 @@ public class FreeVariableAnalyser extends ASTVisitor {
 		}
 		
 		IVariableBinding variableBinding = (IVariableBinding) binding;
-		if (!isBound(variableBinding)) {
-			freeVariables.add(variableBinding);
+		if (!isInFrames(variableBinding)) {
+			addToResult(variableBinding);
 		}
 		
 		return false;
-	}
-
-	private boolean isBound(IVariableBinding variableBinding) {
-		for (Set<IVariableBinding> frame : variableBindingFrames) {
-			if (frame.contains(variableBinding)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean isInRange(ASTNode node) {
-		return node.getStartPosition() >= offset || node.getStartPosition() + node.getLength() <= offset + length;
-	}
-	
-	private void pushFrame(ASTNode node) {
-		if (isInRange(node)) {
-			pushFrame();
-		}
-	}
-	
-	private void popFrame(ASTNode node) {
-		if (isInRange(node)) {
-			variableBindingFrames.pop();
-		}
-	}
-	
-	private Set<IVariableBinding> pushFrame() {
-		return variableBindingFrames.push(new HashSet<IVariableBinding>());
 	}
 }

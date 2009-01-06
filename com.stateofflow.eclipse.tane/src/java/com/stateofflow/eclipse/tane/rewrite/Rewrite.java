@@ -1,6 +1,6 @@
 package com.stateofflow.eclipse.tane.rewrite;
 
-import static com.stateofflow.eclipse.tane.util.ASTUtils.*;
+import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.*;
 
 import java.util.Set;
 

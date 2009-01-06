@@ -1,18 +1,22 @@
 package com.stateofflow.eclipse.tane.util;
 
-import static com.stateofflow.eclipse.tane.util.ASTUtils.findNode;
+import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.findNode;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jface.text.TextSelection;
 
 import com.stateofflow.eclipse.tane.Activator;
+import com.stateofflow.eclipse.tane.flowanalysis.UnhandledExceptionAnalyser;
 import com.stateofflow.eclipse.tane.flowanalysis.FreeVariableAnalyser;
+import com.stateofflow.eclipse.tane.util.ast.Parser;
 import com.stateofflow.eclipse.tane.validation.Validatable;
 import com.stateofflow.eclipse.tane.validation.Validator;
 
@@ -64,8 +68,18 @@ public class Selection implements Validatable {
     }
 
 	public Set<IVariableBinding> getFreeVariables() {
-		FreeVariableAnalyser analyser = new FreeVariableAnalyser(selection.getOffset(), selection.getLength());
+		FreeVariableAnalyser analyser = new FreeVariableAnalyser(getSelectedRange());
 		getNodeEncompassingWholeSelection().getParent().accept(analyser);
-		return analyser.getFreeVariables();
+		return analyser.getResult();
+	}
+	
+	public Set<ITypeBinding> getUnhandledExceptions() {
+		UnhandledExceptionAnalyser analyser = new UnhandledExceptionAnalyser(getSelectedRange(), getParsedCompilationUnit().getAST());
+		getNodeEncompassingWholeSelection().getParent().accept(analyser);
+		return analyser.getUnhandledCheckedExceptions();
+	}
+	
+	private Range getSelectedRange() {
+		return new Range(selection.getOffset(), selection.getLength());
 	}
 }
