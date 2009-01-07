@@ -19,12 +19,12 @@ import com.stateofflow.eclipse.tane.util.Range;
 import com.stateofflow.eclipse.tane.validation.Validatable;
 import com.stateofflow.eclipse.tane.validation.Validator;
 
-public class Selection implements Validatable {
+public class ASTSelection implements Validatable {
     private final TextSelection selection;
     private final ICompilationUnit compilationUnit;
     private CompilationUnit parsedCompilationUnit;
 
-    public Selection(final ICompilationUnit compilationUnit, final TextSelection selection) {
+    public ASTSelection(final ICompilationUnit compilationUnit, final TextSelection selection) {
         this.compilationUnit = compilationUnit;
         this.selection = selection;
     }

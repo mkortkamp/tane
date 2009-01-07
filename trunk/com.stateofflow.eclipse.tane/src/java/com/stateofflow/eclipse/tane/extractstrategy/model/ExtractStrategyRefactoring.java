@@ -11,16 +11,16 @@ import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
 import com.stateofflow.eclipse.tane.extractstrategy.model.validation.initial.InitialConditionValidator;
-import com.stateofflow.eclipse.tane.util.ast.Selection;
+import com.stateofflow.eclipse.tane.util.ast.ASTSelection;
 import com.stateofflow.eclipse.tane.validation.RefactoringStatusValidator;
 
 public class ExtractStrategyRefactoring extends Refactoring {
-	private final Selection selection;
+	private final ASTSelection selection;
 	private final ICompilationUnit compilationUnit;
 
 	public ExtractStrategyRefactoring(final ICompilationUnit unit, final TextSelection textSelection) {
 		this.compilationUnit = unit;
-		selection = new Selection(unit, textSelection);
+		selection = new ASTSelection(unit, textSelection);
 	}
 
 	@Override

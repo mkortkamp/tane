@@ -3,16 +3,16 @@ package com.stateofflow.eclipse.tane.extractstrategy.model.validation.initial;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.OperationCanceledException;
 
-import com.stateofflow.eclipse.tane.util.ast.Selection;
+import com.stateofflow.eclipse.tane.util.ast.ASTSelection;
 import com.stateofflow.eclipse.tane.validation.RefactoringStatusValidator;
 import com.stateofflow.eclipse.tane.validation.validators.NoFreeVariableValidatable;
 import com.stateofflow.eclipse.tane.validation.validators.NoUnhandledExceptionValidatable;
 
 public class InitialConditionValidator {
 	private final RefactoringStatusValidator validator;
-	private final Selection selection;
+	private final ASTSelection selection;
 
-	public InitialConditionValidator(Selection selection, RefactoringStatusValidator validator) {
+	public InitialConditionValidator(ASTSelection selection, RefactoringStatusValidator validator) {
 		this.selection = selection;
 		this.validator = validator;
 	}

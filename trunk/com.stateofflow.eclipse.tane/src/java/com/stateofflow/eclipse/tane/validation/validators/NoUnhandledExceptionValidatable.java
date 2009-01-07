@@ -2,14 +2,14 @@ package com.stateofflow.eclipse.tane.validation.validators;
 
 import org.eclipse.core.runtime.CoreException;
 
-import com.stateofflow.eclipse.tane.util.ast.Selection;
+import com.stateofflow.eclipse.tane.util.ast.ASTSelection;
 import com.stateofflow.eclipse.tane.validation.Validatable;
 import com.stateofflow.eclipse.tane.validation.Validator;
 
 public class NoUnhandledExceptionValidatable implements Validatable {
-	private final Selection selection;
+	private final ASTSelection selection;
 
-	public NoUnhandledExceptionValidatable(Selection selection) {
+	public NoUnhandledExceptionValidatable(ASTSelection selection) {
 		this.selection = selection;
 	}
 
