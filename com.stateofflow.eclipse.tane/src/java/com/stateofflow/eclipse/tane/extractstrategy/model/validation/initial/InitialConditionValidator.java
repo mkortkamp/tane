@@ -3,7 +3,7 @@ package com.stateofflow.eclipse.tane.extractstrategy.model.validation.initial;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.OperationCanceledException;
 
-import com.stateofflow.eclipse.tane.util.Selection;
+import com.stateofflow.eclipse.tane.util.ast.Selection;
 import com.stateofflow.eclipse.tane.validation.RefactoringStatusValidator;
 import com.stateofflow.eclipse.tane.validation.validators.NoFreeVariableValidatable;
 import com.stateofflow.eclipse.tane.validation.validators.NoUnhandledExceptionValidatable;

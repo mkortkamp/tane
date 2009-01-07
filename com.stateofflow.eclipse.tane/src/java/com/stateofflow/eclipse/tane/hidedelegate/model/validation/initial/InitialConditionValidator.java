@@ -4,7 +4,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.dom.Expression;
 
 import com.stateofflow.eclipse.tane.hidedelegate.model.chain.Chain;
-import com.stateofflow.eclipse.tane.util.Selection;
+import com.stateofflow.eclipse.tane.util.ast.Selection;
 import com.stateofflow.eclipse.tane.validation.Validator;
 
 public class InitialConditionValidator {

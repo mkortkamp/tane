@@ -11,7 +11,7 @@ import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
 import com.stateofflow.eclipse.tane.extractstrategy.model.validation.initial.InitialConditionValidator;
-import com.stateofflow.eclipse.tane.util.Selection;
+import com.stateofflow.eclipse.tane.util.ast.Selection;
 import com.stateofflow.eclipse.tane.validation.RefactoringStatusValidator;
 
 public class ExtractStrategyRefactoring extends Refactoring {
