@@ -18,17 +18,17 @@ import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.RewriteMap;
 import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.RewriteMapBuilder;
 import com.stateofflow.eclipse.tane.hidedelegate.model.validation.initial.InitialConditionValidator;
 import com.stateofflow.eclipse.tane.util.MemberFinder;
-import com.stateofflow.eclipse.tane.util.ast.Selection;
+import com.stateofflow.eclipse.tane.util.ast.ASTSelection;
 import com.stateofflow.eclipse.tane.validation.RefactoringStatusValidator;
 
 public class HideDelegateRefactoring extends Refactoring {
 	private String methodName;
-	private final Selection selection;
+	private final ASTSelection selection;
 	private RewriteMap rewrites;
 	private Scope scope;
 
 	public HideDelegateRefactoring(final ICompilationUnit compilationUnit, final TextSelection textSelection) {
-		selection = new Selection(compilationUnit, textSelection);
+		selection = new ASTSelection(compilationUnit, textSelection);
 	}
 
 	@Override
