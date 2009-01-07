@@ -18,7 +18,7 @@ import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.RewriteMap;
 import com.stateofflow.eclipse.tane.hidedelegate.model.rewrite.RewriteMapBuilder;
 import com.stateofflow.eclipse.tane.hidedelegate.model.validation.initial.InitialConditionValidator;
 import com.stateofflow.eclipse.tane.util.MemberFinder;
-import com.stateofflow.eclipse.tane.util.Selection;
+import com.stateofflow.eclipse.tane.util.ast.Selection;
 import com.stateofflow.eclipse.tane.validation.RefactoringStatusValidator;
 
 public class HideDelegateRefactoring extends Refactoring {

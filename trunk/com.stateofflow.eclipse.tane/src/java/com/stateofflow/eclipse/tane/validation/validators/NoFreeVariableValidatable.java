@@ -2,7 +2,7 @@ package com.stateofflow.eclipse.tane.validation.validators;
 
 import org.eclipse.core.runtime.CoreException;
 
-import com.stateofflow.eclipse.tane.util.Selection;
+import com.stateofflow.eclipse.tane.util.ast.Selection;
 import com.stateofflow.eclipse.tane.validation.Validatable;
 import com.stateofflow.eclipse.tane.validation.Validator;
 

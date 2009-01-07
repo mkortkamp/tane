@@ -1,8 +1,7 @@
-package com.stateofflow.eclipse.tane.util;
+package com.stateofflow.eclipse.tane.util.ast;
 
 import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.findNode;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -14,9 +13,9 @@ import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jface.text.TextSelection;
 
 import com.stateofflow.eclipse.tane.Activator;
-import com.stateofflow.eclipse.tane.flowanalysis.UnhandledExceptionAnalyser;
 import com.stateofflow.eclipse.tane.flowanalysis.FreeVariableAnalyser;
-import com.stateofflow.eclipse.tane.util.ast.Parser;
+import com.stateofflow.eclipse.tane.flowanalysis.UnhandledExceptionAnalyser;
+import com.stateofflow.eclipse.tane.util.Range;
 import com.stateofflow.eclipse.tane.validation.Validatable;
 import com.stateofflow.eclipse.tane.validation.Validator;
 
