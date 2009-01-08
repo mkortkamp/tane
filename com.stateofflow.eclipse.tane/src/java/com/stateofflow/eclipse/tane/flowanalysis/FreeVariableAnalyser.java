@@ -7,13 +7,7 @@ import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
-import com.stateofflow.eclipse.tane.util.Range;
-
 public class FreeVariableAnalyser extends AbstractFrameBasedAnalyser<IVariableBinding> {
-	public FreeVariableAnalyser(Range range) {
-		super(range);
-	}
-
 	@Override
 	public boolean visit(Block node) {
 		pushFrame(node);

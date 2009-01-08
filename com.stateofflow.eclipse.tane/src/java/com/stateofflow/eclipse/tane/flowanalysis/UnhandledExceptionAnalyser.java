@@ -1,10 +1,9 @@
 package com.stateofflow.eclipse.tane.flowanalysis;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CatchClause;
 import org.eclipse.jdt.core.dom.ConstructorInvocation;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -16,35 +15,9 @@ import com.stateofflow.eclipse.tane.util.Range;
 import com.stateofflow.eclipse.tane.util.TypeSetMinimizer;
 
 public class UnhandledExceptionAnalyser extends AbstractFrameBasedAnalyser<ITypeBinding> {
-	private final AST ast;
-
-	public UnhandledExceptionAnalyser(Range range, AST ast) {
-		super(range);
-		this.ast = ast;
-	}
-	
 	@Override
-	public Set<ITypeBinding> getResult() {
-		return new TypeSetMinimizer().getMinimalSet(super.getResult());
-	}
-	
-	public Set<ITypeBinding> getUnhandledCheckedExceptions() {
-		Set<ITypeBinding> checkedExceptions = new HashSet<ITypeBinding>();
-		for (ITypeBinding exception : getResult()) {
-			if (isCheckedException(exception)) {
-				checkedExceptions.add(exception);
-			}
-		}
-		return checkedExceptions;
-	}
-	
-	private boolean isCheckedException(ITypeBinding exception) {
-		return !exception.isSubTypeCompatible(resolveWellKnownType(RuntimeException.class))
-			&& exception.isSubTypeCompatible(resolveWellKnownType(Exception.class));
-	}
-
-	private ITypeBinding resolveWellKnownType(Class<?> type) {
-		return ast.resolveWellKnownType(type.getName());
+	public Set<ITypeBinding> analyse(Range range, ASTNode node) {
+		return new TypeSetMinimizer().getMinimalSet(super.analyse(range, node));
 	}
 	
 	@Override

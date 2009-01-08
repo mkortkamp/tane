@@ -9,27 +9,17 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 
 import com.stateofflow.eclipse.tane.util.Range;
 
-abstract class AbstractFrameBasedAnalyser<T> extends ASTVisitor {
+abstract class AbstractFrameBasedAnalyser<T> extends ASTVisitor implements Analyser<T> {
 	protected final Stack<Set<T>> frames = new Stack<Set<T>>();
 	private final Set<T> result = new HashSet<T>();
+	private Range range;
 
-	protected final Range range;
-
-	public AbstractFrameBasedAnalyser(Range range) {
-		this.range = range;
+	public Set<T> analyse(Range rangeOfInterest, ASTNode node) {
 		pushFrame();
-	}
-	
-	public Set<T> getResult() {
+		this.range = rangeOfInterest;
+		node.accept(this);
+		popFrame();
 		return result;
-	}
-	
-	public boolean isEmpty() {
-		return getResult().isEmpty();
-	}
-
-	protected void pushFrame() {
-		frames.push(new HashSet<T>());
 	}
 
 	protected boolean isInFrames(T variableBinding) {
@@ -50,11 +40,19 @@ abstract class AbstractFrameBasedAnalyser<T> extends ASTVisitor {
 			pushFrame();
 		}
 	}
+	
+	protected void pushFrame() {
+		frames.push(new HashSet<T>());
+	}
 
 	protected void popFrame(ASTNode node) {
 		if (isInRange(node)) {
-			frames.pop();
+			popFrame();
 		}
+	}
+
+	private Set<T> popFrame() {
+		return frames.pop();
 	}
 
 	protected void addToCurrentFrame(T t) {
