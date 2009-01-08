@@ -13,7 +13,9 @@ import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jface.text.TextSelection;
 
 import com.stateofflow.eclipse.tane.Activator;
+import com.stateofflow.eclipse.tane.flowanalysis.Analyser;
 import com.stateofflow.eclipse.tane.flowanalysis.FreeVariableAnalyser;
+import com.stateofflow.eclipse.tane.flowanalysis.UnhandledCheckedExceptionAnalyser;
 import com.stateofflow.eclipse.tane.flowanalysis.UnhandledExceptionAnalyser;
 import com.stateofflow.eclipse.tane.util.Range;
 import com.stateofflow.eclipse.tane.validation.Validatable;
@@ -67,15 +69,15 @@ public class ASTSelection implements Validatable {
     }
 
 	public Set<IVariableBinding> getFreeVariables() {
-		FreeVariableAnalyser analyser = new FreeVariableAnalyser(getSelectedRange());
-		getNodeEncompassingWholeSelection().getParent().accept(analyser);
-		return analyser.getResult();
+		return analyse(new FreeVariableAnalyser());
 	}
 	
 	public Set<ITypeBinding> getUnhandledExceptions() {
-		UnhandledExceptionAnalyser analyser = new UnhandledExceptionAnalyser(getSelectedRange(), getParsedCompilationUnit().getAST());
-		getNodeEncompassingWholeSelection().getParent().accept(analyser);
-		return analyser.getUnhandledCheckedExceptions();
+		return analyse(new UnhandledCheckedExceptionAnalyser());
+	}
+	
+	private <T> Set<T> analyse(Analyser<T> analyser) {
+		return analyser.analyse(getSelectedRange(), getNodeEncompassingWholeSelection());
 	}
 	
 	private Range getSelectedRange() {
