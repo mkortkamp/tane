@@ -8,20 +8,20 @@
     <body>
     	<h1>Hide Delegate - Example</h1>
     	<p>Suppose you have code that looks like this:</p>
-    	<div class="code">
+    	<div class="code"><pre>
 Foo foo = new Foo();
 &#8230;
 foo.getBar().getBaz().doSomething();
-    	</div>
+    	</pre></div>
 		<p>In order to move to the OO ideal of eliminating state based metaphors and focusing on message passing, we need to turn this code
 			into something more like this:</p>
-		<div class="code">
+		<div class="code"><pre>
 Foo foo = new Foo();
 &#8230
 foo.doSomething();
-    	</div>
+    	</pre></div>
     	<p>One way of achieving this is to implement <span class="code">Foo.doSomething()</span> like this:</p>
-    	<div class="code">
+    	<div class="code"><pre>
 public class Foo {
     &#8230;
     public void doSomething() {
@@ -29,7 +29,7 @@ public class Foo {
     }
     &#8230;
 }
-    	</div>
+    	</pre></div>
     	<p>Clearly the same process can be followed to push the behaviour further into the model so that
     		<span class="code">Foo.doSomething()</span> is implemented as <span class="code">getBar().doSomething()</span>.</p>
     		
