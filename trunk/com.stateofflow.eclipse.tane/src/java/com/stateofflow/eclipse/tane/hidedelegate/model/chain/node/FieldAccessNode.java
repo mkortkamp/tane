@@ -50,4 +50,17 @@ class FieldAccessNode extends AbstractChainNode {
 	protected IVariableBinding getDeclarationOfMember() {
 		return node.resolveFieldBinding();
 	}
+	
+	public String getSuggestedMethodName() {
+		String name = getDeclarationOfMember().getName();
+		return (isPrimitiveBoolean() ? "is" : "get") + Character.toUpperCase(name.charAt(0)) + name.substring(1);
+	}
+
+	private boolean isPrimitiveBoolean() {
+		return isMemberOfWellKnownType("boolean");
+	}
+
+	private boolean isMemberOfWellKnownType(String typeName) {
+		return node.getAST().resolveWellKnownType(typeName).equals(getTypeOfMember());
+	}
 }

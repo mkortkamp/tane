@@ -61,6 +61,7 @@ class MethodDetailsCollectionPage extends UserInputWizardPage {
 
     private void initializeMethodNameEditor(final Composite composite) {
         methodNameEditor = createStringFieldEditor(createGridComposite(composite, 1, SWT.NONE), "Method Name");
+        methodNameEditor.setStringValue(getRefactoring().getChain().getSuggestedMethodName());
     }
 
     private void initializeScope(final Composite composite) {

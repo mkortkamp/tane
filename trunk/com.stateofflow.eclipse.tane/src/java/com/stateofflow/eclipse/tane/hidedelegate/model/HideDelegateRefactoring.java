@@ -44,7 +44,7 @@ public class HideDelegateRefactoring extends Refactoring {
 		}
 	}
 
-	private Chain getChain() {
+	public Chain getChain() {
 		return new Chain(
 				(Expression) selection.getParentOfNodeAtStartOfSelection(),
 				(Expression) selection.getNodeEncompassingWholeSelection());

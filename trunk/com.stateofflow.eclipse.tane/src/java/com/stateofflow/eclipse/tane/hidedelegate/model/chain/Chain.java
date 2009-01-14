@@ -96,8 +96,12 @@ public class Chain implements Iterable<ChainNode>, Rewriter, Validatable {
 	}
 
     public ITypeBinding getReturnType() {
-        return createNode(root).getTypeOfMember();
+        return createRootNode().getTypeOfMember();
     }
+
+	private ChainNode createRootNode() {
+		return createNode(root);
+	}
 
 	private ICompilationUnit getOriginCompilationUnit() {
 		return getDeclaringTypeOfOrigin().getCompilationUnit();
@@ -200,5 +204,9 @@ public class Chain implements Iterable<ChainNode>, Rewriter, Validatable {
 
 	public void validate(Validator validator) throws CoreException {
 		createOriginNode().validateAsOrigin(validator);
+	}
+
+	public String getSuggestedMethodName() {
+		return createRootNode().getSuggestedMethodName();
 	}
 }

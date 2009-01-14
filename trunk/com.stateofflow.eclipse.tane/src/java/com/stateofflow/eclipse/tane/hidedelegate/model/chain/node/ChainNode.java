@@ -37,4 +37,6 @@ public interface ChainNode {
     IType getDeclaringTypeOfMember();
 
 	void validateAsOrigin(Validator validator) throws CoreException;
+
+	String getSuggestedMethodName();
 }
