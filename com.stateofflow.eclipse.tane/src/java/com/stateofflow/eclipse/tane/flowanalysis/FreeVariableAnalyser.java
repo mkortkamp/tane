@@ -42,20 +42,16 @@ public class FreeVariableAnalyser extends AbstractFrameBasedAnalyser<IVariableBi
 
 	@Override
 	public boolean visit(SimpleName node) {
-		if (!isInRange(node)) {
-			return false;
-		}
-		
-		final IBinding binding = node.resolveBinding();
-		if (binding.getKind() != IBinding.VARIABLE) {
-			return false;
-		}
-		
-		IVariableBinding variableBinding = (IVariableBinding) binding;
-		if (!isInFrames(variableBinding)) {
-			addToResult(variableBinding);
+		if (isInRange(node) && node.resolveBinding().getKind() == IBinding.VARIABLE) {
+			addIfNew((IVariableBinding) node.resolveBinding());
 		}
 		
 		return false;
+	}
+
+	private void addIfNew(IVariableBinding variableBinding) {
+		if (!isInFrames(variableBinding)) {
+			addToResult(variableBinding);
+		}
 	}
 }
