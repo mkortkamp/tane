@@ -4,7 +4,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.text.TextSelection;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorActionDelegate;
@@ -16,7 +16,7 @@ import org.eclipse.ui.PlatformUI;
 public abstract class TaneEditorAction implements IEditorActionDelegate {
 
 	private ICompilationUnit compilationUnit;
-	private TextSelection selection;
+	private ITextSelection selection;
 
 	public final void run(IAction action) {
 		if (compilationUnit == null || selection == null) {
@@ -25,7 +25,7 @@ public abstract class TaneEditorAction implements IEditorActionDelegate {
 		doRun(compilationUnit, selection);
 	}
 
-	protected abstract void doRun(ICompilationUnit unit, TextSelection textSelection);
+	protected abstract void doRun(ICompilationUnit unit, ITextSelection textSelection);
 
 	protected Shell getShell() {
 		final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
@@ -36,7 +36,7 @@ public abstract class TaneEditorAction implements IEditorActionDelegate {
 	}
 
 	public void selectionChanged(final IAction action, final ISelection newSelection) {
-		this.selection = newSelection instanceof TextSelection ? (TextSelection) newSelection : null;
+		this.selection = newSelection instanceof ITextSelection ? (ITextSelection) newSelection : null;
 	}
 
 	public void setActiveEditor(final IAction action, final IEditorPart editor) {

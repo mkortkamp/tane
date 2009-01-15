@@ -43,4 +43,12 @@
             primary="true">
       </toc>
    </extension>
+   <extension
+         point="org.eclipse.jdt.ui.quickAssistProcessors">
+      <quickAssistProcessor
+            class="com.stateofflow.eclipse.tane.hidedelegate.ui.quickassist.QuickAssistProcessor"
+            id="com.stateofflow.eclipse.tane.hidedelegate.quickassistprocessor"
+            name="Hide Delegate">
+      </quickAssistProcessor>
+   </extension>
 </plugin>

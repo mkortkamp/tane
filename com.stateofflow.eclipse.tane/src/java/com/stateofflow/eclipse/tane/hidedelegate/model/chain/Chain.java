@@ -204,6 +204,7 @@ public class Chain implements Iterable<ChainNode>, Rewriter, Validatable {
 
 	public void validate(Validator validator) throws CoreException {
 		createOriginNode().validateAsOrigin(validator);
+		validator.validate(size() > 1, "No delegate to hide");
 	}
 
 	public String getSuggestedMethodName() {
