@@ -8,7 +8,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jface.text.TextSelection;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
@@ -27,7 +27,7 @@ public class HideDelegateRefactoring extends Refactoring {
 	private RewriteMap rewrites;
 	private Scope scope;
 
-	public HideDelegateRefactoring(final ICompilationUnit compilationUnit, final TextSelection textSelection) {
+	public HideDelegateRefactoring(final ICompilationUnit compilationUnit, final ITextSelection textSelection) {
 		selection = new ASTSelection(compilationUnit, textSelection);
 	}
 

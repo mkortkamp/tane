@@ -1,7 +1,7 @@
 package com.stateofflow.eclipse.tane.extractstrategy.ui;
 
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jface.text.TextSelection;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 
@@ -11,7 +11,7 @@ import com.stateofflow.eclipse.tane.ui.TaneEditorAction;
 public class ExtractStrategyAction extends TaneEditorAction {
 
 	@Override
-	protected void doRun(final ICompilationUnit unit, final TextSelection textSelection) {
+	protected void doRun(final ICompilationUnit unit, final ITextSelection textSelection) {
 		final ExtractStrategyRefactoring refactoring = new ExtractStrategyRefactoring(unit, textSelection);
 		final RefactoringWizard wizard = new ExtractStrategyRefactoringWizard(refactoring);
 		try {

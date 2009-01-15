@@ -2,6 +2,7 @@ package com.stateofflow.eclipse.tane;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -30,5 +31,9 @@ public class Activator extends AbstractUIPlugin {
 
 	public static void log(String message, Exception e) {
 		getDefault().getLog().log(new Status(IStatus.WARNING, PLUGIN_ID, message, e));
+	}
+
+	public static Shell getShell() {
+		return getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
 	}
 }

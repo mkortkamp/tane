@@ -10,23 +10,22 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
-import org.eclipse.jface.text.TextSelection;
+import org.eclipse.jface.text.ITextSelection;
 
 import com.stateofflow.eclipse.tane.Activator;
 import com.stateofflow.eclipse.tane.flowanalysis.Analyser;
 import com.stateofflow.eclipse.tane.flowanalysis.FreeVariableAnalyser;
 import com.stateofflow.eclipse.tane.flowanalysis.UnhandledCheckedExceptionAnalyser;
-import com.stateofflow.eclipse.tane.flowanalysis.UnhandledExceptionAnalyser;
 import com.stateofflow.eclipse.tane.util.Range;
 import com.stateofflow.eclipse.tane.validation.Validatable;
 import com.stateofflow.eclipse.tane.validation.Validator;
 
 public class ASTSelection implements Validatable {
-    private final TextSelection selection;
+    private final ITextSelection selection;
     private final ICompilationUnit compilationUnit;
     private CompilationUnit parsedCompilationUnit;
 
-    public ASTSelection(final ICompilationUnit compilationUnit, final TextSelection selection) {
+    public ASTSelection(final ICompilationUnit compilationUnit, final ITextSelection selection) {
         this.compilationUnit = compilationUnit;
         this.selection = selection;
     }
