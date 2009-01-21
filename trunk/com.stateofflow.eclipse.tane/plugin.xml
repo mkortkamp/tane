@@ -24,6 +24,7 @@
                menubarPath="additions">
          </action>
       </viewerContribution>
+      <!--
       <viewerContribution
             id="com.stateofflow.eclipse.tane.extractstrategy.popupmenu"
             targetID="#CompilationUnitEditorContext">
@@ -35,6 +36,7 @@
                menubarPath="additions">
          </action>
       </viewerContribution>
+      -->
    </extension>
    <extension
          point="org.eclipse.help.toc">
