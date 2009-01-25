@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel="stylesheet" href="../book.css" charset="ISO-8859-1" type="text/css"/>
+        <title>Tane - Hide Delegate - Preconditions</title>
+    </head>
+    <body>
+    	<h1>Hide Delegate - Preconditions</h1>
+    	<ul>
+    		<li>All elements in the chain must be method invocations, except for the last which may be a field access.</li>
+    		<li>The source must be available for the receiver of the first method invocation.</li>
+    		<li>The receiver of the first invocation must be a <span class="code">class</span>, not an
+    			<span class="code">interface</span>.</li>
+    		<li>The chain must consist of at least two member accesses (method invocation or field access).</li>
+    	</ul>
+    	<p>If you find that the refactoring fails under conditions that should be checked as a precondition, please
+    		<a href="http://groups.google.com/group/tane-eclipse-refactorings" title="Tane's Google Group">get in touch</a>.</p>
+    		
+    	<hr/>
+    	<div class="attribution">
+    		This plugin is provided by <a href="http://www.stateofflow.com" title="State Of Flow homepage">State Of Flow</a>
+    	</div>
+    </body>
+</html>
