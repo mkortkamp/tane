@@ -67,15 +67,31 @@ public class Chain implements Iterable<ChainNode>, Rewriter, Validatable {
 		ASTNode imageRoot = null;
 		for (final ChainNode node : this) {
 			imageRoot = current;
-			if (current != imageOrigin && !node.matches(current)) {
+			if (!node.matches(current)) {
 				return null;
 			}
 			current = current.getParent();
 		}
-		return new Chain((Expression) imageOrigin, (Expression) imageRoot);
+		Chain image = new Chain((Expression) imageOrigin, (Expression) imageRoot);
+        return image.isProperChain() ? image : null;
 	}
 
-	private ChainNode createNode(final ASTNode node) {
+	private boolean isProperChain() {
+        ASTNode node = origin;
+        while (node != root) {
+            if (isNodeAnArgumentOfParentMethodInvocation(node)) {
+                return false;
+            }
+            node = node.getParent();
+        }
+        return true;
+    }
+
+    private boolean isNodeAnArgumentOfParentMethodInvocation(ASTNode node) {
+        return node.getParent().getNodeType() == ASTNode.METHOD_INVOCATION && ((MethodInvocation) node.getParent()).arguments().contains(node);
+    }
+
+    private ChainNode createNode(final ASTNode node) {
 		return new ChainNodeFactory().createNode(node);
 	}
 
@@ -143,18 +159,15 @@ public class Chain implements Iterable<ChainNode>, Rewriter, Validatable {
 		return count;
 	}
 
-	private Map<ICompilationUnit, Set<SearchMatch>> getReferencesByCompilationUnit(final MemberFinder memberFinder,
-			final SubMonitor progressMonitor) throws CoreException {
+	private Map<ICompilationUnit, Set<SearchMatch>> getReferencesByCompilationUnit(final MemberFinder memberFinder, final SubMonitor progressMonitor) throws CoreException {
 		return getCompilationUnitGroups(memberFinder.getMatches(getOriginJavaElement(), IJavaSearchConstants.REFERENCES, progressMonitor));
 	}
 
-	private Map<ICompilationUnit, Set<SearchMatch>> getPotentialVisibilityUpdatesByCompilationUnit(final MemberFinder memberFinder,
-			final SubMonitor progressMonitor) throws CoreException {
+    private Map<ICompilationUnit, Set<SearchMatch>> getPotentialVisibilityUpdatesByCompilationUnit(final MemberFinder memberFinder, final SubMonitor progressMonitor) throws CoreException {
 		progressMonitor.beginTask("Finding declarations", size());
 		final Set<SearchMatch> matches = new HashSet<SearchMatch>();
 		for (final ChainNode node : this) {
-			matches.addAll(memberFinder.getMatches(node.getJavaElementOfMember(), IJavaSearchConstants.DECLARATIONS, progressMonitor
-					.newChild(1)));
+			matches.addAll(memberFinder.getMatches(node.getJavaElementOfMember(), IJavaSearchConstants.DECLARATIONS, progressMonitor.newChild(1)));
 		}
 		return getCompilationUnitGroups(matches);
 	}
@@ -163,8 +176,7 @@ public class Chain implements Iterable<ChainNode>, Rewriter, Validatable {
 		return new CompilationUnitSearchMatchGrouper().getMatchesByCompilationUnit(matches);
 	}
 
-	public RewriteMap createRewriteMap(final MemberFinder referencesMemberFinder, final MemberFinder visibilityUpdatesMemberFinder,
-			final RewriteMapBuilder rewriteMapBuilder, final String methodName, final SubMonitor monitor) throws CoreException {
+	public RewriteMap createRewriteMap(final MemberFinder referencesMemberFinder, final MemberFinder visibilityUpdatesMemberFinder, final RewriteMapBuilder rewriteMapBuilder, final String methodName, final SubMonitor monitor) throws CoreException {
 		monitor.beginTask("Creating rewrite map", 3);
 		final Map<ICompilationUnit, Set<SearchMatch>> chainOriginReferencesByCompilationUnit = getReferencesByCompilationUnit(
 				referencesMemberFinder, monitor.newChild(1));
@@ -205,6 +217,7 @@ public class Chain implements Iterable<ChainNode>, Rewriter, Validatable {
 	public void validate(Validator validator) throws CoreException {
 		createOriginNode().validateAsOrigin(validator);
 		validator.validate(size() > 1, "No delegate to hide");
+		validator.validate(isProperChain(), "Selection cannot be hidden");
 	}
 
 	public String getSuggestedMethodName() {
