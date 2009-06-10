@@ -49,5 +49,5 @@ abstract class AbstractChainNode implements ChainNode {
 
 	private boolean validate(Validator validator, boolean valid, String message) {
 		return validator.validate(valid, message + ": " + getDeclaringTypeOfMember().getFullyQualifiedName());
-	}
+	}	
 }

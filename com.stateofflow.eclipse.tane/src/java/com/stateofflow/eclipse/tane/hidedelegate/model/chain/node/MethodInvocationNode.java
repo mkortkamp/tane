@@ -71,7 +71,7 @@ class MethodInvocationNode extends AbstractChainNode {
 				&& getDeclarationOfMember().isEqualTo(((MethodInvocation) astNode).resolveMethodBinding());
 	}
 	
-	public String getSuggestedMethodName() {
+    public String getSuggestedMethodName() {
 		return getDeclarationOfMember().getName();
 	}
 }
