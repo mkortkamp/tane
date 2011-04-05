@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel="stylesheet" href="../book.css" charset="ISO-8859-1" type="text/css"/>
+        <title>Tane - Minimise Scope - Example</title>
+    </head>
+    <body>
+    	<h1>Minimise Scope - Example</h1>
+    	<p>Suppose you have code that looks like this:</p>
+    	<div class="code"><pre>
+double sum;
+double[][] rows = getRows();
+double[] means = new double[rows.length];
+
+for (int row = 0 ; row < rows.length ; row++) {
+    sum = 0;
+    for (double col : rows[row])
+        sum += col;
+    means[row] = sum / rows[row].length;
+}
+    	</pre></div>
+		<p>The <span class="code">sum</span> variable is declared a long way from its use.
+		   It would be better if it was declared just before its use, so that the code is easier to reason about and so that Extract Method
+		   can be more easily applied to separate out the parts of the method above. <i>i.e.</i> it would be better if the code looked like
+		   this:</p>
+    	<div class="code"><pre>
+double[][] rows = getRows();
+double[] means = new double[rows.length];
+
+for (int row = 0 ; row < rows.length ; row++) {
+    double sum = 0;
+    for (double col : rows[row])
+        sum += col;
+    means[row] = sum / rows[row].length;
+}
+    	</pre></div>
+    	<p>Moving <span class="code">sum</span> is easily achieved with the Minimise Scope refactoring. Joining the 
+    	   <span class="code">sum</span> variable declaration and assignment can be achieved by using Eclipse's built in Join Variable Declaration
+    	   refactoring.</p>
+    		
+    	<hr/>
+    	<div class="attribution">
+    		This plugin is provided by <a href="http://www.stateofflow.com" title="State Of Flow homepage">State Of Flow</a>
+    	</div>
+    </body>
+</html>

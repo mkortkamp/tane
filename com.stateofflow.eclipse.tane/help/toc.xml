@@ -7,5 +7,12 @@
 		<topic label="Preconditions" href="help/hideDelegate/preconditions.html"/>
 		<topic label="Future Work" href="help/hideDelegate/futureWork.html"/>
 	</topic>
+	<topic label="Minimise Scope">
+		<topic label="Definition" href="help/minimiseScope/definition.html"/>
+		<topic label="Example" href="help/minimiseScope/example.html"/>
+		<topic label="Usage" href="help/minimiseScope/usage.html"/>
+		<topic label="Preconditions" href="help/minimiseScope/preconditions.html"/>
+		<topic label="Future Work" href="help/minimiseScope/futureWork.html"/>
+	</topic>
 	<topic label="Changes" href="help/changes.html"/>
 </toc>
