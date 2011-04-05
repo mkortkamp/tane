@@ -2,6 +2,8 @@ package com.stateofflow.eclipse.tane.minimisescope.ui.quickassist;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.NullLiteral;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.ui.text.java.IInvocationContext;
@@ -9,12 +11,13 @@ import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jdt.ui.text.java.IProblemLocation;
 import org.eclipse.jdt.ui.text.java.IQuickAssistProcessor;
 
+import com.stateofflow.eclipse.tane.Activator;
 import com.stateofflow.eclipse.tane.util.ast.ASTUtils;
 
 public class QuickAssistProcessor implements IQuickAssistProcessor {
     public IJavaCompletionProposal[] getAssists(final IInvocationContext context, final IProblemLocation[] locations) throws CoreException {
         final ASTNode node = ASTUtils.findNode(context.getASTRoot(), context.getSelectionOffset());
-        return isAMinimisableLocalDeclaration(node) ? getAssistsForVariableDeclaration(context, (VariableDeclarationFragment) node.getParent()) : null;
+        return isAMinimisableLocalDeclaration(node) ? getAssistsForVariableDeclaration((VariableDeclarationFragment) node.getParent()) : null;
     }
 
     private boolean isAMinimisableLocalDeclaration(final ASTNode node) {
@@ -22,16 +25,12 @@ public class QuickAssistProcessor implements IQuickAssistProcessor {
             return false;
         }
         VariableDeclarationFragment fragment = (VariableDeclarationFragment) node.getParent();
-        VariableDeclarationStatement statement = (VariableDeclarationStatement) fragment.getParent();
-        return hasOnlyOneFragment(statement) && isValueNullOrConstant(fragment);
+        return isValueNullOrConstant(fragment);
     }
 
     private boolean isValueNullOrConstant(VariableDeclarationFragment fragment) {
-        return fragment.getInitializer() == null || fragment.getInitializer().resolveConstantExpressionValue() != null;
-    }
-
-    private boolean hasOnlyOneFragment(VariableDeclarationStatement node) {
-        return node.fragments().size() == 1;
+        final Expression initializer = fragment.getInitializer();
+        return initializer == null || initializer.getNodeType() == ASTNode.NULL_LITERAL || initializer.resolveConstantExpressionValue() != null;
     }
 
     private boolean isALocalVariableDeclaration(final ASTNode node) {
@@ -50,7 +49,7 @@ public class QuickAssistProcessor implements IQuickAssistProcessor {
         return node.getParent().getParent().getNodeType() == ASTNode.VARIABLE_DECLARATION_STATEMENT;
     }
 
-    private IJavaCompletionProposal[] getAssistsForVariableDeclaration(@SuppressWarnings("unused") IInvocationContext context, VariableDeclarationFragment node) {
+    private IJavaCompletionProposal[] getAssistsForVariableDeclaration(VariableDeclarationFragment node) {
         return new IJavaCompletionProposal[]{new CompletionProposal(node)};
     }
 

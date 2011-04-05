@@ -12,6 +12,7 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
@@ -39,7 +40,7 @@ public class MinimiseScopeRefactoring extends Refactoring {
     }
 
     @Override
-    public Change createChange(IProgressMonitor arg0) throws CoreException, OperationCanceledException {
+    public Change createChange(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
         return change;
     }
 
@@ -52,7 +53,8 @@ public class MinimiseScopeRefactoring extends Refactoring {
             containingStatement = containingStatement.getParent();
         }
         refactor(containingStatement, firstReference);
-        return new RefactoringStatus();
+        RefactoringStatus refactoringStatus = new RefactoringStatus();
+        return refactoringStatus;
     }
 
     @Override
@@ -99,8 +101,7 @@ public class MinimiseScopeRefactoring extends Refactoring {
     private ASTRewrite createRewrite(final ASTNode statementContainingAllReferences, ASTNode firstReference) {
         TextEditGroup editGroup = new TextEditGroup("");
         ASTRewrite rewrite = ASTRewrite.create(getAST());
-        ASTNode newDeclaration = rewrite.createMoveTarget(declarationStatement);
-        rewrite.remove(declarationStatement, editGroup);
+        ASTNode newDeclaration = removeExistingFragment(editGroup, rewrite);
 
         if (statementContainingAllReferences.getNodeType() != ASTNode.BLOCK) {
             rewriteInsideNewBlock(rewrite, statementContainingAllReferences, newDeclaration, editGroup);
@@ -108,6 +109,26 @@ public class MinimiseScopeRefactoring extends Refactoring {
             insertDeclaration(rewrite, statementContainingAllReferences, firstReference, newDeclaration, editGroup);
         }
         return rewrite;
+    }
+
+    private VariableDeclarationStatement removeExistingFragment(TextEditGroup editGroup, ASTRewrite rewrite) {
+        return declarationStatement.fragments().size() == 1 ? removeExistingDeclaration(editGroup, rewrite) : removeExistingFragmentAndCreateNewDeclaration(editGroup, rewrite);
+    }
+
+    @SuppressWarnings("unchecked")
+    private VariableDeclarationStatement removeExistingFragmentAndCreateNewDeclaration(TextEditGroup editGroup, ASTRewrite rewrite) {
+        final VariableDeclarationFragment newFragment = (VariableDeclarationFragment) rewrite.createMoveTarget(declarationFragment);
+        final VariableDeclarationStatement newDeclaration = getAST().newVariableDeclarationStatement(newFragment);
+        newDeclaration.modifiers().addAll(declarationStatement.modifiers());
+        newDeclaration.setType((Type) rewrite.createCopyTarget(declarationStatement.getType()));
+        rewrite.remove(declarationFragment, editGroup);
+        return newDeclaration;
+    }
+
+    private VariableDeclarationStatement removeExistingDeclaration(TextEditGroup editGroup, ASTRewrite rewrite) {
+        final VariableDeclarationStatement newDeclaration = (VariableDeclarationStatement) rewrite.createMoveTarget(declarationStatement);
+        rewrite.remove(declarationStatement, editGroup);
+        return newDeclaration;
     }
 
     private void insertDeclaration(ASTRewrite rewrite, final ASTNode container, ASTNode insertionPoint, ASTNode newDeclaration, TextEditGroup editGroup) {

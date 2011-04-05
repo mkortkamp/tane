@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel="stylesheet" href="../book.css" charset="ISO-8859-1" type="text/css"/>
+        <title>Tane - Minimise Scope - Usage</title>
+    </head>
+    <body>
+    	<h1>Minimise Scope - Usage</h1>
+    	<p>Given the code at the start of the above example, place the cursor within the local variable to be refactored (or select the field) in the Java editor:</p>
+    	
+    	<div class="code"><pre>
+double <span class="selected">sum</span>;
+double[][] rows = getRows();
+double[] means = new double[rows.length];
+
+for (int row = 0 ; row < rows.length ; row++) {
+    sum = 0;
+    for (double col : rows[row])
+        sum += col;
+    means[row] = sum / rows[row].length;
+}
+    	</pre></div>
+    	
+    	<p>Now invoke <b>Quick Assist</b> and select <b>Minimise Scope</b>. If the Minimise Scope Quick Assist is not available, it is
+    	   because the <a href="preconditions">preconditions</a> for applying this refactoring have not been met.</p>
+    	<p>The refactoring will work out what needs to be done and then show you a preview of the refactored code, as usual.
+    	   If you are happy with the changes, click 'Finish' and they will be applied.</p>
+       	<hr/>
+    	<div class="attribution">
+    		This plugin is provided by <a href="http://www.stateofflow.com" title="State Of Flow homepage">State Of Flow</a>
+    	</div>
+    </body>
+</html>

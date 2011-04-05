@@ -1,10 +1,9 @@
 package com.stateofflow.eclipse.tane.util.ast;
 
-import static org.eclipse.jdt.internal.corext.dom.NodeFinder.*;
+import static org.eclipse.jdt.internal.corext.dom.NodeFinder.perform;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
@@ -16,7 +15,6 @@ import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
 import org.eclipse.jdt.core.dom.ChildListPropertyDescriptor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Name;
-import org.eclipse.jdt.core.dom.SimpleName;
 
 public class ASTUtils {
     public static ASTNode findNode(final CompilationUnit root, final int offset) {
