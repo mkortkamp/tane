@@ -53,9 +53,9 @@
             name="Hide Delegate">
       </quickAssistProcessor>
       <quickAssistProcessor
-            class="com.stateofflow.eclipse.tane.minimisescope.ui.quickassist.QuickAssistProcessor"
-            id="com.stateofflow.eclipse.tane.minimisescope.quickassistprocessor"
-            name="Minimise Scope">
+            class="com.stateofflow.eclipse.tane.reducescope.ui.quickassist.QuickAssistProcessor"
+            id="com.stateofflow.eclipse.tane.reducescope.quickassistprocessor"
+            name="Reduce Scope">
       </quickAssistProcessor>
    </extension>
 </plugin>
