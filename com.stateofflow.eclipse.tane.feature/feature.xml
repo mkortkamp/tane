@@ -2,7 +2,7 @@
 <feature
       id="com.stateofflow.eclipse.tane.feature"
       label="Tane Feature"
-      version="1.1.2.qualifier"
+      version="1.2.0.qualifier"
       provider-name="State Of Flow">
 
    <description url="http://code.google.com/p/tane/">
