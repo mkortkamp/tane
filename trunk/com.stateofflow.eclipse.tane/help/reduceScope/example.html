@@ -3,10 +3,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <link rel="stylesheet" href="../book.css" charset="ISO-8859-1" type="text/css"/>
-        <title>Tane - Minimise Scope - Example</title>
+        <title>Tane - Reduce Scope - Example</title>
     </head>
     <body>
-    	<h1>Minimise Scope - Example</h1>
+    	<h1>Reduce Scope - Example</h1>
     	<p>Suppose you have code that looks like this:</p>
     	<div class="code"><pre>
 double sum;
@@ -35,7 +35,7 @@ for (int row = 0 ; row < rows.length ; row++) {
     means[row] = sum / rows[row].length;
 }
     	</pre></div>
-    	<p>Moving <span class="code">sum</span> is easily achieved with the Minimise Scope refactoring. Joining the 
+    	<p>Moving <span class="code">sum</span> is easily achieved with the Reduce Scope refactoring. Joining the 
     	   <span class="code">sum</span> variable declaration and assignment can be achieved by using Eclipse's built in Join Variable Declaration
     	   refactoring.</p>
     		
