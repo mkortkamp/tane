@@ -9,36 +9,80 @@
     	<h1>Reduce Scope - Example</h1>
     	<p>Suppose you have code that looks like this:</p>
     	<div class="code"><pre>
-double sum;
-double[][] rows = getRows();
-double[] means = new double[rows.length];
-
-for (int row = 0 ; row < rows.length ; row++) {
-    sum = 0;
-    for (double col : rows[row])
-        sum += col;
-    means[row] = sum / rows[row].length;
+public double[] calculateMeans() {
+    double sum;
+    double[][] rows = getRows();
+    double[] means = new double[rows.length];
+    
+    for (double[] row : rows) {
+        if (row.length == 0)
+            throw new IllegalArgumentException("All rows must contain some data");
+    }
+    
+    for (int row = 0 ; row < rows.length ; row++) {
+        sum = 0;
+        for (double col : rows[row])
+            sum += col;
+        means[row] = sum / rows[row].length;
+    }
+    
+    return means;
 }
     	</pre></div>
-		<p>The <span class="code">sum</span> variable is declared a long way from its use.
-		   It would be better if it was declared just before its use, so that the code is easier to reason about and so that Extract Method
-		   can be more easily applied to separate out the parts of the method above. <i>i.e.</i> it would be better if the code looked like
-		   this:</p>
+		<p>The <span class="code">sum</span> and <span class="code">means</span> variables are declared a long way from their use.
+		   It would be better if they were declared just before their uses, so that the code is easier to reason about and so that other
+		   refactoring can be applied (<i>e.g.</i> Extract Method) in a way that includes the variable declaration. Applying Reduce Scope
+		   and then Join Declaration to <span class="code">sum</span> results in:</p>
     	<div class="code"><pre>
-double[][] rows = getRows();
-double[] means = new double[rows.length];
-
-for (int row = 0 ; row < rows.length ; row++) {
-    double sum = 0;
-    for (double col : rows[row])
-        sum += col;
-    means[row] = sum / rows[row].length;
+public double[] calculateMeans() {
+    double[][] rows = getRows();
+    double[] means = new double[rows.length];
+    
+    for (double[] row : rows) {
+        if (row.length == 0)
+            throw new IllegalArgumentException("All rows must contain some data");
+    }
+    
+    for (int row = 0 ; row < rows.length ; row++) {
+        double sum = 0;
+        for (double col : rows[row])
+            sum += col;
+        means[row] = sum / rows[row].length;
+    }
+    
+    return means;
 }
     	</pre></div>
-    	<p>Moving <span class="code">sum</span> is easily achieved with the Reduce Scope refactoring. Joining the 
-    	   <span class="code">sum</span> variable declaration and assignment can be achieved by using Eclipse's built in Join Variable Declaration
-    	   refactoring.</p>
-    		
+
+		<p>Attempting to apply Reduce Scope to <span class="code">means</span> results in a warning, because a value that is not a compile time constant
+		   is assigned to <span class="code">means</span> at the point of declaration; in principle, moving the declaration of <span class="code">means</span>
+		   could result in different behaviour if for example, <span class="code">rows</span> was reassigned or some mutation occurred between
+		   the current position where <span class="code">means</span> is declared and the new position. However, in this case, we can see that no
+		   behavioural change will occur, so we proceed:</p>
+    	<div class="code"><pre>
+public double[] calculateMeans() {
+    double[][] rows = getRows();
+    for (double[] row : rows) {
+        if (row.length == 0)
+            throw new IllegalArgumentException("All rows must contain some data");
+    }
+    
+    double[] means = new double[rows.length];
+    for (int row = 0 ; row < rows.length ; row++) {
+        double sum;
+        sum = 0;
+        for (double col : rows[row])
+            sum += col;
+        means[row] = sum / rows[row].length;
+    }
+    
+    return means;
+}
+    	</pre></div>
+    	
+    	<p>Having moved the declarations of <span class="code">sum</span> and <span class="code">means</span>, we can easily Extract Method one or more
+    	   time to further improve the code.</p>
+    	
     	<hr/>
     	<div class="attribution">
     		This plugin is provided by <a href="http://www.stateofflow.com" title="State Of Flow homepage">State Of Flow</a>

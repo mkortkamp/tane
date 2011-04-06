@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Block;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
@@ -59,13 +60,21 @@ public class ReduceScopeRefactoring extends Refactoring {
 
     @Override
     public RefactoringStatus checkInitialConditions(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
+        RefactoringStatus status = new RefactoringStatus();
+        if (!isUninitializedOrConstant(declarationFragment)) {
+            status.addWarning("Assignment to a non-constant value. Changing the location of the declaration may affect behaviour.");
+        }
         declarationStatement = (VariableDeclarationStatement) declarationFragment.getParent();
         references = findReferences();
-        RefactoringStatus status = new RefactoringStatus();
         if (references.isEmpty()) {
             status.addError("The selected variable has no references");
         }
         return status;
+    }
+    
+    private boolean isUninitializedOrConstant(VariableDeclarationFragment fragment) {
+        final Expression initializer = fragment.getInitializer();
+        return initializer == null || initializer.getNodeType() == ASTNode.NULL_LITERAL || initializer.resolveConstantExpressionValue() != null;
     }
 
     @Override
