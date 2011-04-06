@@ -12,16 +12,14 @@
     		title="Refactoring book at amazon.co.uk"><img src="../images/uk.gif"/></a>&nbsp;<a
     		href="http://www.amazon.com/exec/obidos/ASIN/0201485672" title="Refactoring book at amazon.com"><img src="../images/us.gif"/></a>),
     		<a href="http://martinfowler.com/" title="Martin Fowler's homepage">Martin Fowler</a> describes the problem and solution for the
-    		Hide Delegate refactoring thus (pp. 157):</p>
+    		Reduce Scope refactoring thus (pp. 157):</p>
     	<div class="blockquote">
-	    	<i>A client is calling a delegate class of an object.</i>
+	    	<i>You have a local variable declared in a scope that is larger than where it is used.</i>
 			</br>&nbsp;
-			</br><b>Create methods on the server to hide the delegate.</b>
+			</br><b>Reduce the scope of the variable so that it is only visible in the scope where it is used.</b>
     	</div>
-    	<p>Here are some <a href="http://www.refactoring.com/catalog/hideDelegate.html" title="Class diagrams">class diagrams</a> showing the
+    	<p>Here are some <a href="http://www.refactoring.com/catalog/reduceScopeOfVariable.html" title="Code Fragments">code fragments</a> showing the
     	situation before and after the refactoring is applied.</p>
-    	<p>The effect of this is to reduce coupling, abstract behaviour, reduce the use of state based metaphors and focus on message passing
-    		by pushing a Demeter violating chain of method calls into a more appropriate class.</p>
     		
     	<hr/>
     	<div class="attribution">
