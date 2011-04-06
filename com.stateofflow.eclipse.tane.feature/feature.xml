@@ -10,12 +10,10 @@
 that we have &apos;inherited&apos; have needed more than the set of refactorings
 provided by Eclipse, so we decided to write those that we thought
 would be most beneficial.
-
 Tane is at an early stage of development. We have only implemented
-one refactoring and the UI for that is a bit rough around the
-edges, but the refactoring does work and is useful. If you are
-interested in contributing, either with more refactorings or
-by improving the work we&apos;ve started, please
+two refactorings and the UI is a bit rough around the edges, but the
+refactorings work and are useful. If you are interested in contributing,
+either with more refactorings or by improving the work we&apos;ve started, please
    </description>
 
    <license url="http://www.eclipse.org/legal/epl-v10.html">
