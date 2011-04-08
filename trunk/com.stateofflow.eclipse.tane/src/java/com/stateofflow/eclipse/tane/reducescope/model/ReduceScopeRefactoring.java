@@ -7,7 +7,9 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Block;
@@ -17,6 +19,7 @@ import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.DocumentChange;
@@ -25,6 +28,7 @@ import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.TextEditGroup;
 
+import com.stateofflow.eclipse.tane.Activator;
 import com.stateofflow.eclipse.tane.flowanalysis.VariableReferenceAnalyser;
 import com.stateofflow.eclipse.tane.util.Range;
 
@@ -53,9 +57,22 @@ public class ReduceScopeRefactoring extends Refactoring {
         if (containingStatement == firstReference && containingStatement.getParent().getNodeType() == ASTNode.BLOCK) {
             containingStatement = containingStatement.getParent();
         }
+        RefactoringStatus status = new RefactoringStatus();
+        if (isMoveANoOp(firstReference)) {
+            status.addError("The variable is already in minimal scope");
+        }
         refactor(containingStatement, firstReference);
-        RefactoringStatus refactoringStatus = new RefactoringStatus();
-        return refactoringStatus;
+        return status;
+    }
+
+    private boolean isMoveANoOp(final ASTNode firstReference) throws CoreException {
+        try {
+            int endOfCurrentLocation = declarationStatement.getStartPosition() + declarationStatement.getLength();
+            String interveningCharacters = document.get(endOfCurrentLocation, firstReference.getStartPosition() - endOfCurrentLocation);
+            return interveningCharacters.matches("\\s*");
+        } catch (BadLocationException e) {
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Unexpected", e));
+        }
     }
 
     @Override
@@ -96,7 +113,7 @@ public class ReduceScopeRefactoring extends Refactoring {
         return nodeContainingParent == container ? statementNode : findStatementContainedBy(container, nodeContainingParent);
     }
 
-    private void refactor(final ASTNode statementContainingAllReferences, ASTNode firstReference) {
+    private void refactor(final ASTNode statementContainingAllReferences, ASTNode firstReference) throws CoreException {
         createChange(createRewrite(statementContainingAllReferences, firstReference));
     }
 
@@ -107,9 +124,9 @@ public class ReduceScopeRefactoring extends Refactoring {
         change = documentChange;
     }
 
-    private ASTRewrite createRewrite(final ASTNode statementContainingAllReferences, ASTNode firstReference) {
-        TextEditGroup editGroup = new TextEditGroup("");
+    private ASTRewrite createRewrite(final ASTNode statementContainingAllReferences, ASTNode firstReference) throws CoreException {
         ASTRewrite rewrite = ASTRewrite.create(getAST());
+        TextEditGroup editGroup = new TextEditGroup("");
         ASTNode newDeclaration = removeExistingFragment(editGroup, rewrite);
 
         if (statementContainingAllReferences.getNodeType() != ASTNode.BLOCK) {
