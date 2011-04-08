@@ -1,5 +1,7 @@
-package com.stateofflow.eclipse.tane.reducescope.model;
+package com.stateofflow.eclipse.tane.reducescope;
 
+import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.findContainingStatement;
+import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.findStatementContainedBy;
 import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.findFirst;
 import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.findLowestCommonAncestor;
 
@@ -58,11 +60,15 @@ public class ReduceScopeRefactoring extends Refactoring {
             containingStatement = containingStatement.getParent();
         }
         RefactoringStatus status = new RefactoringStatus();
+        checkNotANoOp(firstReference, status);
+        refactor(containingStatement, firstReference);
+        return status;
+    }
+
+    private void checkNotANoOp(final ASTNode firstReference, RefactoringStatus status) throws CoreException {
         if (isMoveANoOp(firstReference)) {
             status.addError("The variable is already in minimal scope");
         }
-        refactor(containingStatement, firstReference);
-        return status;
     }
 
     private boolean isMoveANoOp(final ASTNode firstReference) throws CoreException {
@@ -78,15 +84,23 @@ public class ReduceScopeRefactoring extends Refactoring {
     @Override
     public RefactoringStatus checkInitialConditions(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
         RefactoringStatus status = new RefactoringStatus();
-        if (!isUninitializedOrConstant(declarationFragment)) {
-            status.addWarning("Assignment to a non-constant value. Changing the location of the declaration may affect behaviour.");
-        }
+        checkAssignedValue(status);
         declarationStatement = (VariableDeclarationStatement) declarationFragment.getParent();
         references = findReferences();
+        checkReferences(status);
+        return status;
+    }
+
+    private void checkReferences(RefactoringStatus status) {
         if (references.isEmpty()) {
             status.addError("The selected variable has no references");
         }
-        return status;
+    }
+
+    private void checkAssignedValue(RefactoringStatus status) {
+        if (!isUninitializedOrConstant(declarationFragment)) {
+            status.addWarning("Assignment to a non-constant value. Changing the location of the declaration may affect behaviour.");
+        }
     }
     
     private boolean isUninitializedOrConstant(VariableDeclarationFragment fragment) {
@@ -104,15 +118,6 @@ public class ReduceScopeRefactoring extends Refactoring {
         return new VariableReferenceAnalyser(declarationFragment.getName()).analyse(new Range(declarationFragment.getStartPosition() + declarationFragment.getLength(), enclosingBlock.getStartPosition() + enclosingBlock.getLength()), enclosingBlock);
     }
 
-    private ASTNode findStatementContainedBy(ASTNode container, ASTNode statementNode) {
-        if (statementNode == container) {
-            return statementNode;
-        }
-
-        final ASTNode nodeContainingParent = findContainingStatement(statementNode.getParent());
-        return nodeContainingParent == container ? statementNode : findStatementContainedBy(container, nodeContainingParent);
-    }
-
     private void refactor(final ASTNode statementContainingAllReferences, ASTNode firstReference) throws CoreException {
         createChange(createRewrite(statementContainingAllReferences, firstReference));
     }
@@ -126,6 +131,11 @@ public class ReduceScopeRefactoring extends Refactoring {
 
     private ASTRewrite createRewrite(final ASTNode statementContainingAllReferences, ASTNode firstReference) throws CoreException {
         ASTRewrite rewrite = ASTRewrite.create(getAST());
+        rewrite(statementContainingAllReferences, firstReference, rewrite);
+        return rewrite;
+    }
+
+    private void rewrite(final ASTNode statementContainingAllReferences, ASTNode firstReference, ASTRewrite rewrite) {
         TextEditGroup editGroup = new TextEditGroup("");
         ASTNode newDeclaration = removeExistingFragment(editGroup, rewrite);
 
@@ -134,7 +144,6 @@ public class ReduceScopeRefactoring extends Refactoring {
         } else {
             insertDeclaration(rewrite, statementContainingAllReferences, firstReference, newDeclaration, editGroup);
         }
-        return rewrite;
     }
 
     private VariableDeclarationStatement removeExistingFragment(TextEditGroup editGroup, ASTRewrite rewrite) {
@@ -171,25 +180,5 @@ public class ReduceScopeRefactoring extends Refactoring {
 
     private AST getAST() {
         return declarationStatement.getAST();
-    }
-
-    private ASTNode findContainingStatement(ASTNode node) {
-        switch (node.getNodeType()) {
-            case ASTNode.ASSERT_STATEMENT :
-            case ASTNode.BLOCK :
-            case ASTNode.DO_STATEMENT :
-            case ASTNode.ENHANCED_FOR_STATEMENT :
-            case ASTNode.EXPRESSION_STATEMENT :
-            case ASTNode.FOR_STATEMENT :
-            case ASTNode.IF_STATEMENT :
-            case ASTNode.RETURN_STATEMENT :
-            case ASTNode.SWITCH_STATEMENT :
-            case ASTNode.THROW_STATEMENT :
-            case ASTNode.VARIABLE_DECLARATION_STATEMENT :
-            case ASTNode.WHILE_STATEMENT :
-                return node;
-            default :
-                return findContainingStatement(node.getParent());
-        }
     }
 }
