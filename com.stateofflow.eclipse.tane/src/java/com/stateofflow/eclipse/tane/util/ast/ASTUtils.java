@@ -79,4 +79,38 @@ public class ASTUtils {
 		}
 		return first;
 	}
+	
+
+    public static ASTNode findContainingStatement(ASTNode node) {
+        switch (node.getNodeType()) {
+            case ASTNode.ASSERT_STATEMENT :
+            case ASTNode.BLOCK :
+            case ASTNode.DO_STATEMENT :
+            case ASTNode.ENHANCED_FOR_STATEMENT :
+            case ASTNode.EXPRESSION_STATEMENT :
+            case ASTNode.FOR_STATEMENT :
+            case ASTNode.IF_STATEMENT :
+            case ASTNode.RETURN_STATEMENT :
+            case ASTNode.SWITCH_STATEMENT :
+            case ASTNode.THROW_STATEMENT :
+            case ASTNode.VARIABLE_DECLARATION_STATEMENT :
+            case ASTNode.WHILE_STATEMENT :
+                return node;
+            default :
+                return findContainingStatement(node.getParent());
+        }
+    }
+
+    public static ASTNode findStatementContainedBy(ASTNode container, ASTNode statementNode) {
+        if (statementNode == container) {
+            return statementNode;
+        }
+    
+        final ASTNode nodeContainingParent = findContainingStatement(statementNode.getParent());
+        return nodeContainingParent == container ? statementNode : findStatementContainedBy(container, nodeContainingParent);
+    }
+
+    public static boolean isALocalVariableDeclaration(final ASTNode node) {
+        return node.getNodeType() == ASTNode.SIMPLE_NAME && node.getParent().getNodeType() == ASTNode.VARIABLE_DECLARATION_FRAGMENT && node.getParent().getParent().getNodeType() == ASTNode.VARIABLE_DECLARATION_STATEMENT;
+    }
 }
