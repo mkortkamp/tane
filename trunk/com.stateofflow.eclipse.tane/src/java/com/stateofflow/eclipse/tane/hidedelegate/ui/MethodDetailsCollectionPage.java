@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Group;
 
 import com.stateofflow.eclipse.tane.hidedelegate.model.HideDelegateRefactoring;
 import com.stateofflow.eclipse.tane.hidedelegate.model.Scope;
+import com.stateofflow.eclipse.tane.ui.UIBuilder;
 import com.stateofflow.eclipse.tane.util.JavaIdentifierValidator;
 
 class MethodDetailsCollectionPage extends UserInputWizardPage {
@@ -27,31 +28,12 @@ class MethodDetailsCollectionPage extends UserInputWizardPage {
     }
 
     public void createControl(final Composite parent) {
-        final Composite composite = createGridComposite(parent, 1, SWT.NULL);
+        final Composite composite = UIBuilder.gridComposite(parent, 1, SWT.NULL);
         setControl(composite);
 
         initializeMethodNameEditor(composite);
         initializeScope(composite);
         validateAndSetUpRefactoring();
-    }
-
-    private Composite createGridComposite(final Composite parent, final int columns, final int style) {
-        final Composite composite = new Composite(parent, style);
-
-        final GridLayout layout = new GridLayout(columns, false);
-        composite.setLayout(layout);
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-        return composite;
-    }
-
-    private StringFieldEditor createStringFieldEditor(final Composite composite, final String label) {
-        final StringFieldEditor editor = new StringFieldEditor("", label + ":", composite);
-        editor.setPropertyChangeListener(new IPropertyChangeListener() {
-            public void propertyChange(final PropertyChangeEvent event) {
-                validateAndSetUpRefactoring();
-            }
-        });
-        return editor;
     }
 
     @Override
@@ -60,7 +42,11 @@ class MethodDetailsCollectionPage extends UserInputWizardPage {
     }
 
     private void initializeMethodNameEditor(final Composite composite) {
-        methodNameEditor = createStringFieldEditor(createGridComposite(composite, 1, SWT.NONE), "Method Name");
+        methodNameEditor = UIBuilder.stringEditor(UIBuilder.gridComposite(composite, 1, SWT.NONE), "Method Name", new IPropertyChangeListener() {
+            public void propertyChange(final PropertyChangeEvent event) {
+                validateAndSetUpRefactoring();
+            }
+        });
         methodNameEditor.setStringValue(getRefactoring().getChain().getSuggestedMethodName());
     }
 
