@@ -2,7 +2,7 @@ package com.stateofflow.eclipse.tane.util.ast;
 
 import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.findNode;
 
-import java.util.Set;
+import java.util.Collection;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
@@ -67,15 +67,15 @@ public class ASTSelection implements Validatable {
     	validator.validate(isSomethingSelected(), "Please select something to refactor");
     }
 
-	public Set<IVariableBinding> getFreeVariables() {
+	public Collection<IVariableBinding> getFreeVariables() {
 		return analyse(new FreeVariableAnalyser());
 	}
 	
-	public Set<ITypeBinding> getUnhandledExceptions() {
+	public Collection<ITypeBinding> getUnhandledExceptions() {
 		return analyse(new UnhandledCheckedExceptionAnalyser());
 	}
 	
-	private <T> Set<T> analyse(Analyser<T> analyser) {
+	private <T> Collection<T> analyse(Analyser<T> analyser) {
 		return analyser.analyse(getSelectedRange(), getNodeEncompassingWholeSelection());
 	}
 	
