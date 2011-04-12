@@ -57,5 +57,10 @@
             id="com.stateofflow.eclipse.tane.reducescope.quickassistprocessor"
             name="Reduce Scope">
       </quickAssistProcessor>
+      <quickAssistProcessor
+            class="com.stateofflow.eclipse.tane.increasescope.QuickAssistProcessor"
+            id="com.stateofflow.eclipse.tane.increasescope.quickassistprocessor"
+            name="Unify Declarations">
+      </quickAssistProcessor>
    </extension>
 </plugin>
