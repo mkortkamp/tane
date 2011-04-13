@@ -14,5 +14,12 @@
 		<topic label="Preconditions" href="help/reduceScope/preconditions.html"/>
 		<topic label="Future Work" href="help/reduceScope/futureWork.html"/>
 	</topic>
+	<topic label="Unify Declarations">
+		<topic label="Definition" href="help/unifyDeclarations/definition.html"/>
+		<topic label="Example" href="help/unifyDeclarations/example.html"/>
+		<topic label="Usage" href="help/unifyDeclarations/usage.html"/>
+		<topic label="Preconditions" href="help/unifyDeclarations/preconditions.html"/>
+		<topic label="Future Work" href="help/unifyDeclarations/futureWork.html"/>
+	</topic>
 	<topic label="Changes" href="help/changes.html"/>
 </toc>

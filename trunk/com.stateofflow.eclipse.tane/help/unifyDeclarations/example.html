@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel="stylesheet" href="../book.css" charset="ISO-8859-1" type="text/css"/>
+        <title>Tane - Unify Declarations - Example</title>
+    </head>
+    <body>
+    	<h1>Unify Declarations - Example</h1>
+    	<p>In Clean Code, Bob Martin gives the following example:</p>
+    	<div class="code"><pre>
+char elementId = element.charAt(0);
+String elementTail = element.substring(1);
+
+if (elementTail.length() == 0) {
+    marshallers.put(elementId, new BooleanArgumentMatcher());
+} else if (elementTail.equals("*")) {
+    marshallers.put(elementId, new StringArgumentMatcher());
+} else if (elementTail.equals("#")) {
+    marshallers.put(elementId, new IntegerArgumentMatcher());
+} else if (elementTail.equals("##")) {
+    marshallers.put(elementId, new DoubleArgumentMatcher());
+} else if (elementTail.equals("[*]")) {
+    marshallers.put(elementId, new StringArrayArgumentMatcher());
+} else {
+    throw new IllegalArgumentException();
+}
+    	</pre></div>
+		<p>There is clear duplication and mixing of concerns. Using <b>Extract Local Variable</b> and <b>Generalize Declared Type</b> repeatedly on the values
+		   added to the <code>marshallers</code> map, results in:</p>
+    	<div class="code"><pre>
+char elementId = element.charAt(0);
+String elementTail = element.substring(1);
+
+if (elementTail.length() == 0) {
+    ArgumentMatcher matcher = new BooleanArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else if (elementTail.equals("*")) {
+    ArgumentMatcher matcher = new StringArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else if (elementTail.equals("#")) {
+    ArgumentMatcher matcher = new IntegerArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else if (elementTail.equals("##")) {
+    ArgumentMatcher matcher = new DoubleArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else if (elementTail.equals("[*]")) {
+    ArgumentMatcher matcher = new StringArrayArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else {
+    throw new IllegalArgumentException();
+}
+    	</pre></div>
+
+		<p>We can now <b>Unify Declarations</b> to move the declaration of <code>matcher</code> to just above the <code>if</code> statement:</p>
+    	<div class="code"><pre>
+char elementId = element.charAt(0);
+String elementTail = element.substring(1);
+
+ArgumentMatcher matcher;
+if (elementTail.length() == 0) {
+    matcher = new BooleanArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else if (elementTail.equals("*")) {
+    matcher = new StringArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else if (elementTail.equals("#")) {
+    matcher = new IntegerArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else if (elementTail.equals("##")) {
+    matcher = new DoubleArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else if (elementTail.equals("[*]")) {
+    matcher = new StringArrayArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else {
+    throw new IllegalArgumentException();
+}
+    	</pre></div>
+    	
+    	<p>The remainder of the refactoring is left as an exercise for the reader.</p>
+    	
+    	<hr/>
+    	<div class="attribution">
+    		This plugin is provided by <a href="http://www.stateofflow.com" title="State Of Flow homepage">State Of Flow</a>
+    	</div>
+    </body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel="stylesheet" href="../book.css" charset="ISO-8859-1" type="text/css"/>
+        <title>Tane - Unify Declarations - Preconditions</title>
+    </head>
+    <body>
+    	<h1>Unify Declarations - Preconditions</h1>
+    	<ul>
+    		<li>The selected variable must be declared within a conditional statement (<code>if</code> or <code>switch</code>). The conditional does
+    		    not have to be the immediate parent of the variable declaration.</li>
+    		<li>A variable with the same name as the selected one must be declared in at least one other branch of the conditional, and
+    		    all such variables must have the same type as the selected variable.</li>
+    		<li>No variable with the same name may be declared after the conditional statement within the parent scope of the conditional.</li>
+    		<li>No references to any of the variables (whose declarations are to be unified) must require the <code>final</code> modifier
+    		    in the declaration, <i>i.e.</i> no references must be made from within a local class.</li>
+    	</ul>
+    	<p>If you find that the refactoring fails under conditions that should be checked as a precondition, please
+    		<a href="http://groups.google.com/group/tane-eclipse-refactorings" title="Tane's Google Group">get in touch</a>.</p>
+    		
+    	<hr/>
+    	<div class="attribution">
+    		This plugin is provided by <a href="http://www.stateofflow.com" title="State Of Flow homepage">State Of Flow</a>
+    	</div>
+    </body>
+</html>

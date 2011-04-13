@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel="stylesheet" href="../book.css" charset="ISO-8859-1" type="text/css"/>
+        <title>Tane - Unify Declarations - Definition</title>
+    </head>
+    <body>
+    	<h1>Unify Declarations - Definition</h1>
+    	<div class="blockquote">
+	    	<i>You have similar local variables declared within clauses of a conditional statement and it would be useful to have
+	    	   the assigned values available after the conditional exits.</i>
+			</br>&nbsp;
+			</br><b>Unify the declarations of the variables by enlarging the scope of the variable so that it is visible in the parent scope
+			     of the conditional.</b>
+    	</div>
+    	<p>This refactoring is most likely to be used as an intermediate step in sequence of refactorings. Enlarging the scope of a variable
+    	   is unlikely to be a step that improves maintainability unless it is part of some larger combination that subsequently restores
+    	   the focus.</p>
+    	<hr/>
+    	<div class="attribution">
+    		This plugin is provided by <a href="http://www.stateofflow.com" title="State Of Flow homepage">State Of Flow</a>
+    	</div>
+    </body>
+</html>

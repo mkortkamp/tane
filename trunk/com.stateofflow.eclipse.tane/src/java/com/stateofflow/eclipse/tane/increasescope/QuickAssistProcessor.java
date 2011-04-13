@@ -11,6 +11,8 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
@@ -19,6 +21,8 @@ import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jdt.ui.text.java.IProblemLocation;
 import org.eclipse.jdt.ui.text.java.IQuickAssistProcessor;
 
+import com.stateofflow.eclipse.tane.flowanalysis.VariableReferenceAnalyser;
+import com.stateofflow.eclipse.tane.util.Range;
 import com.stateofflow.eclipse.tane.util.ast.ASTUtils;
 
 public class QuickAssistProcessor implements IQuickAssistProcessor {
@@ -45,6 +49,9 @@ public class QuickAssistProcessor implements IQuickAssistProcessor {
             return null;
         }
         final List<VariableDeclarationFragment> declarationsWithSameName = findVariableDeclarations(containingConditional, fragment.getName().toString());
+        if (declarationsWithSameName.size() < 2) {
+            return null;
+        }
         return allDeclarationsHaveTheSameType(declarationsWithSameName) ? getAssistsForVariableDeclarations(containingConditional, declarationsWithSameName) : null;
     }
 
@@ -76,8 +83,45 @@ public class QuickAssistProcessor implements IQuickAssistProcessor {
         return fragment.getExtraDimensions() > 0 || ((VariableDeclarationStatement) fragment.getParent()).getType().isArrayType();
     }
 
-    private IJavaCompletionProposal[] getAssistsForVariableDeclarations(Statement containingNode, List<VariableDeclarationFragment> declarationsWithSameName) {
-        return new IJavaCompletionProposal[] { new CompletionProposal(containingNode, declarationsWithSameName) };
+    private IJavaCompletionProposal[] getAssistsForVariableDeclarations(Statement containingNode, List<VariableDeclarationFragment> toUnify) {
+        if (!newVariableIsRequiredToBeFinal(toUnify)) {
+            return new IJavaCompletionProposal[] { new CompletionProposal(containingNode, toUnify) };
+        } else {
+            return null;
+        }
+    }
+
+    private boolean newVariableIsRequiredToBeFinal(List<VariableDeclarationFragment> toUnify) {
+        for (VariableDeclarationFragment fragment : toUnify) {
+            if (isRequiredToBeFinal(fragment)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isRequiredToBeFinal(VariableDeclarationFragment fragment) {
+        VariableDeclarationStatement declarationStatement = (VariableDeclarationStatement) fragment.getParent();
+        if (!Modifier.isFinal(declarationStatement.getModifiers())) {
+            return false;
+        }
+        ASTNode enclosingStatement = ASTUtils.findContainingStatement(declarationStatement.getParent());
+        Set<SimpleName> references = new VariableReferenceAnalyser(fragment.getName()).analyse(new Range(enclosingStatement.getStartPosition(), enclosingStatement.getLength()), enclosingStatement);
+        for (SimpleName reference : references) {
+            if (requiresDeclarationToBeFinal(enclosingStatement, reference)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean requiresDeclarationToBeFinal(ASTNode enclosingStatement, SimpleName reference) {
+        for (ASTNode node = reference ; node != enclosingStatement ; node = node.getParent()) {
+            if (node.getNodeType() == ASTNode.ANONYMOUS_CLASS_DECLARATION || node.getNodeType() == ASTNode.TYPE_DECLARATION) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private Statement getContainingConditional(ASTNode node) {
