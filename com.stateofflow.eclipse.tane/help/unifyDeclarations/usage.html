@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel="stylesheet" href="../book.css" charset="ISO-8859-1" type="text/css"/>
+        <title>Tane - Unify Declarations - Usage</title>
+    </head>
+    <body>
+    	<h1>Unify Declarations - Usage</h1>
+    	<p>Given the code at the second stage in the partially refactored version of the above example, place the cursor within the name of one of
+    	   the local variables whose declarations are to be unified (or select the variable name) in the Java editor:</p>
+    	
+    	<div class="code"><pre>
+char elementId = element.charAt(0);
+String elementTail = element.substring(1);
+
+if (elementTail.length() == 0) {
+    ArgumentMatcher <span class="selected">matcher</span> = new BooleanArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else if (elementTail.equals("*")) {
+    ArgumentMatcher matcher = new StringArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else if (elementTail.equals("#")) {
+    ArgumentMatcher matcher = new IntegerArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else if (elementTail.equals("##")) {
+    ArgumentMatcher matcher = new DoubleArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else if (elementTail.equals("[*]")) {
+    ArgumentMatcher matcher = new StringArrayArgumentMatcher();
+    marshallers.put(elementId, matcher);
+} else {
+    throw new IllegalArgumentException();
+}
+    	</pre></div>
+    	
+    	<p>Now invoke <b>Quick Assist</b> and select <b>Unify Declarations</b>. If the <b>Unify Declarations</b> <b>Quick Assist</b> is not available, it is
+    	   because the <a href="preconditions.html">preconditions</a> for applying this refactoring have not been met.</p>
+    	<p>The refactoring will work out what needs to be done and then show you a preview of the refactored code, as usual.
+    	   If you are happy with the changes, click 'Finish' and they will be applied.</p>
+       	<hr/>
+    	<div class="attribution">
+    		This plugin is provided by <a href="http://www.stateofflow.com" title="State Of Flow homepage">State Of Flow</a>
+    	</div>
+    </body>
+</html>

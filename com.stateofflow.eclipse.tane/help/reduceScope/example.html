@@ -31,8 +31,8 @@ public double[] calculateMeans() {
     	</pre></div>
 		<p>The <span class="code">sum</span> and <span class="code">means</span> variables are declared a long way from their use.
 		   It would be better if they were declared just before their uses, so that the code is easier to reason about and so that other
-		   refactoring can be applied (<i>e.g.</i> Extract Method) in a way that includes the variable declaration. Applying Reduce Scope
-		   and then Join Declaration to <span class="code">sum</span> results in:</p>
+		   refactoring can be applied (<i>e.g.</i> <b>Extract Method</b>) in a way that includes the variable declaration. Applying <b>Reduce Scope</b>
+		   and then <b>Join Declaration</b> to <span class="code">sum</span> results in:</p>
     	<div class="code"><pre>
 public double[] calculateMeans() {
     double[][] rows = getRows();
