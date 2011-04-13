@@ -2,7 +2,7 @@
 <feature
       id="com.stateofflow.eclipse.tane.feature"
       label="Tane Feature"
-      version="1.2.0.qualifier"
+      version="1.3.0.qualifier"
       provider-name="State Of Flow">
 
    <description url="http://code.google.com/p/tane/">
@@ -11,9 +11,11 @@ that we have &apos;inherited&apos; have needed more than the set of refactorings
 provided by Eclipse, so we decided to write those that we thought
 would be most beneficial.
 Tane is at an early stage of development. We have only implemented
-two refactorings and the UI is a bit rough around the edges, but the
+three refactorings and the UI is a bit rough around the edges,
+but the
 refactorings work and are useful. If you are interested in contributing,
-either with more refactorings or by improving the work we&apos;ve started, please
+either with more refactorings or by improving the work we&apos;ve
+started, please
    </description>
 
    <license url="http://www.eclipse.org/legal/epl-v10.html">
