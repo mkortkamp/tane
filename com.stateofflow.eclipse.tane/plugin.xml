@@ -58,8 +58,8 @@
             name="Reduce Scope">
       </quickAssistProcessor>
       <quickAssistProcessor
-            class="com.stateofflow.eclipse.tane.increasescope.QuickAssistProcessor"
-            id="com.stateofflow.eclipse.tane.increasescope.quickassistprocessor"
+            class="com.stateofflow.eclipse.tane.unifydeclarations.QuickAssistProcessor"
+            id="com.stateofflow.eclipse.tane.unifydeclarations.quickassistprocessor"
             name="Unify Declarations">
       </quickAssistProcessor>
    </extension>
