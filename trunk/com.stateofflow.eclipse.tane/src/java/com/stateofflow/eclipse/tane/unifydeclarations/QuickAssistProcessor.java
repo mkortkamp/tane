@@ -38,9 +38,6 @@ public class QuickAssistProcessor implements IQuickAssistProcessor {
     }
     
     private IJavaCompletionProposal[] getAssists(VariableDeclarationFragment fragment) {
-        if (isArray(fragment)) {
-            return null;
-        }
         final Statement containingConditional = (Statement) getContainingConditional(fragment);
         if (containingConditional == null) {
             return null;
@@ -77,10 +74,6 @@ public class QuickAssistProcessor implements IQuickAssistProcessor {
             }
         });
         return result[0];
-    }
-
-    public boolean isArray(VariableDeclarationFragment fragment) {
-        return fragment.getExtraDimensions() > 0 || ((VariableDeclarationStatement) fragment.getParent()).getType().isArrayType();
     }
 
     private IJavaCompletionProposal[] getAssistsForVariableDeclarations(Statement containingNode, List<VariableDeclarationFragment> toUnify) {
