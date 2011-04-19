@@ -13,6 +13,8 @@ import org.eclipse.jdt.core.dom.ArrayType;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.IExtendedModifier;
+import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.Type;
@@ -137,7 +139,6 @@ public class UnifyDeclarationsRefactoring extends Refactoring {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void insertNewDeclaration(ASTRewrite rewrite, Block block, TextEditGroup editGroup) {
         VariableDeclarationFragment fragmentToCopy = fragments.get(0);
         final VariableDeclarationFragment newFragment = getAST().newVariableDeclarationFragment();
@@ -147,10 +148,19 @@ public class UnifyDeclarationsRefactoring extends Refactoring {
         VariableDeclarationStatement declarationStatement = (VariableDeclarationStatement) fragmentToCopy.getParent();
         final VariableDeclarationStatement newDeclaration = getAST().newVariableDeclarationStatement(newFragment);
         
-        newDeclaration.modifiers().addAll(declarationStatement.modifiers());
+        copyModifiers(rewrite, declarationStatement, newDeclaration);
         newDeclaration.setType((Type) rewrite.createCopyTarget(declarationStatement.getType()));
         
         rewrite.getListRewrite(block, Block.STATEMENTS_PROPERTY).insertBefore(newDeclaration, node, editGroup);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void copyModifiers(ASTRewrite rewrite, VariableDeclarationStatement declarationStatement, final VariableDeclarationStatement newDeclaration) {
+        for (IExtendedModifier modifier : (Iterable<IExtendedModifier>) declarationStatement.modifiers()) {
+            if (modifier instanceof Modifier) {
+                newDeclaration.modifiers().add(rewrite.createCopyTarget((Modifier) modifier));
+            }
+        }
     }
     
     private boolean isArray(VariableDeclarationFragment fragment) {

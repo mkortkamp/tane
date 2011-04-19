@@ -1,6 +1,6 @@
 package com.stateofflow.eclipse.tane.hidedelegate.model.rewrite;
 
-import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.*;
+import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.findNode;
 
 import java.util.Collections;
 import java.util.Map;
