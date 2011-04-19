@@ -1,6 +1,7 @@
 package com.stateofflow.eclipse.tane.rewrite;
 
-import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.*;
+import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.getBodyDeclarationPropertyForType;
+import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.getDeclarationForType;
 
 import java.util.Set;
 
@@ -17,11 +18,11 @@ import org.eclipse.jdt.core.dom.ExpressionStatement;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.Type;
-import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
 import org.eclipse.ltk.core.refactoring.CompositeChange;

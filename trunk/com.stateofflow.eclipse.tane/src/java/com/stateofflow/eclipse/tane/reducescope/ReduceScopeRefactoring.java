@@ -1,9 +1,9 @@
 package com.stateofflow.eclipse.tane.reducescope;
 
 import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.findContainingStatement;
-import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.findStatementContainedBy;
 import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.findFirst;
 import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.findLowestCommonAncestor;
+import static com.stateofflow.eclipse.tane.util.ast.ASTUtils.findStatementContainedBy;
 
 import java.util.Set;
 
